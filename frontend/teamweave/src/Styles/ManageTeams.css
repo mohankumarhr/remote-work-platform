@@ -1,0 +1,599 @@
+/* Add Member Modal */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(31, 41, 55, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+.modalContent {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.12);
+    padding: 32px 28px 24px 28px;
+    min-width: 340px;
+    max-width: 90vw;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+.modalContent h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 18px;
+    text-align: left;
+}
+.modalInput {
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 15px;
+    margin-bottom: 12px;
+    background: #f8fafc;
+    transition: border-color 0.2s;
+}
+.modalInput:focus {
+    border-color: #6366f1;
+    outline: none;
+}
+.modalError {
+    color: #dc2626;
+    font-size: 13px;
+    margin-bottom: 8px;
+    text-align: left;
+}
+.modalActions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+.modalButton {
+    padding: 10px 22px;
+    border-radius: 8px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #6366f1;
+    color: #fff;
+    transition: background 0.2s;
+}
+.modalButton.cancel {
+    background: #f3f4f6;
+    color: #374151;
+}
+.modalButton:hover {
+    background: #2563eb;
+}
+.modalButton.cancel:hover {
+    background: #e5e7eb;
+    color: #2563eb;
+}
+/* Improved Add Member Button Style */
+.actionButton.add-member {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 0;
+    border-radius: 8px;
+    margin-top: 4px;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+    border: none;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.add-member{
+    background-color: transparent;
+    border: none;
+    color: #1d4ed8;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: 20px
+}
+
+.actionButton.add-member:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(59,130,246,0.15);
+}
+/* ManageTeams.css */
+
+.manageTeamsContent {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.manageTeamsHeader {
+    margin-bottom: 32px;
+}
+
+.manageTeamsHeader .pageTitle {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 8px 0;
+}
+
+.manageTeamsHeader .pageSubtitle {
+    font-size: 16px;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* Tabs */
+.tabsContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.tabsList {
+    display: flex;
+    gap: 0;
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border: none;
+    background: none;
+    color: #6b7280;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.tab:hover {
+    color: #374151;
+    background-color: #f9fafb;
+}
+
+.tab.active {
+    color: #6366f1;
+    border-bottom-color: #6366f1;
+    background-color: #f8faff;
+}
+
+.tab svg {
+    width: 16px;
+    height: 16px;
+}
+
+.createNewButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.createNewButton:hover {
+    background: #5856eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.createNewButton svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Search */
+.searchContainer {
+    margin-bottom: 24px;
+}
+
+.searchInputWrapper {
+    position: relative;
+    max-width: 400px;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    width: 16px;
+    height: 16px;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.searchInput:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Content Grid */
+.contentGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 24px;
+}
+
+.itemCard {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.itemCard:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.itemHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.itemTitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+    flex: 1;
+    margin-right: 12px;
+}
+
+.itemActions {
+    display: flex;
+    gap: 8px;
+}
+
+.actionButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.actionButton svg {
+    width: 14px;
+    height: 14px;
+}
+
+.actionButton.edit {
+    background: #f0f9ff;
+    color: #0284c7;
+}
+
+.actionButton.edit:hover {
+    background: #0284c7;
+    color: white;
+}
+
+.actionButton.delete {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.actionButton.delete:hover {
+    background: #dc2626;
+    color: white;
+}
+
+.itemContent {
+    margin-bottom: 16px;
+}
+
+.itemDescription {
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 0 16px 0;
+}
+
+.itemMeta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.statusBadge,
+.priorityBadge,
+.dueDateBadge,
+.createdBadge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.statusBadge.completed {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.statusBadge.inprogress {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.statusBadge.todo {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.statusBadge.active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.statusBadge.onhold {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.priorityBadge.high {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.priorityBadge.medium {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.priorityBadge.low {
+    background: #f0f9ff;
+    color: #0284c7;
+}
+
+.dueDateBadge {
+    background: #f8fafc;
+    color: #475569;
+}
+
+.createdBadge {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+/* Empty State */
+.emptyState {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 64px 32px;
+    text-align: center;
+}
+
+.emptyIcon {
+    width: 64px;
+    height: 64px;
+    background: #f3f4f6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    color: #9ca3af;
+}
+
+.emptyIcon svg {
+    width: 32px;
+    height: 32px;
+}
+
+.emptyState h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #374151;
+    margin: 0 0 8px 0;
+}
+
+.emptyState p {
+    color: #6b7280;
+    margin: 0 0 24px 0;
+}
+
+.emptyStateButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.emptyStateButton:hover {
+    background: #5856eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.emptyStateButton svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Loading State */
+.loadingState {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 64px;
+    color: #6b7280;
+    font-size: 16px;
+}
+
+/* --- Team Members Modal --- */
+.team-members-title {
+  margin-bottom: 18px;
+  font-size: 1.3rem;
+  color: #2563eb;
+  font-weight: 600;
+}
+.team-members-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.team-member-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  gap: 50px;
+}
+.team-member-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.team-member-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    color: white;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+.team-member-name {
+  font-weight: 500;
+  color: #374151;
+}
+.team-member-remove {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.team-member-remove:hover {
+  background: #dc2626;
+}
+.team-members-actions {
+  margin-top: 18px;
+  text-align: right;
+}
+.team-members-close {
+  background: #e5e7eb;
+  color: #374151;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.team-members-close:hover {
+  background: #d1d5db;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .manageTeamsContent {
+        padding: 16px;
+    }
+
+    .tabsContainer {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+    }
+
+    .tabsList {
+        justify-content: center;
+    }
+
+    .contentGrid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .itemHeader {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .itemTitle {
+        margin-right: 0;
+    }
+
+    .itemActions {
+        align-self: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    .tab {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+
+    .tab span {
+        display: none;
+    }
+
+    .createNewButton span {
+        display: none;
+    }
+
+    .searchInputWrapper {
+        max-width: none;
+    }
+}

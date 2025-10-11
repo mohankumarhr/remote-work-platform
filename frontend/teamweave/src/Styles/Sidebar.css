@@ -1,0 +1,324 @@
+/* Sidebar.css - Styled to match Team Sync Zen */
+
+.sideBarContainer {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 280px;
+  height: 100vh;
+  background-color: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  z-index: 1000;
+  overflow-y: auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: all 0.3s ease;
+}
+
+/* Collapsed state - completely hidden */
+.sideBarContainer.collapsed {
+  width: 0;
+  overflow: hidden;
+  border-right: none;
+  box-shadow: none;
+}
+
+/* Hide text content when collapsed */
+.sideBarContainer.collapsed .logoText,
+.sideBarContainer.collapsed .sectionTitle,
+.sideBarContainer.collapsed .sidebarMenuItem span,
+.sideBarContainer.collapsed .ProjectCreationButton span,
+.sideBarContainer.collapsed .toolsTitle,
+.sideBarContainer.collapsed .userInfo {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+/* Adjust menu items for collapsed state */
+.sideBarContainer.collapsed .sidebarMenuItem {
+  justify-content: center;
+  padding: 10px;
+}
+
+.sideBarContainer.collapsed .ProjectCreationButton {
+  justify-content: center;
+  padding: 12px;
+}
+
+.sideBarContainer.collapsed .logoContainer {
+  justify-content: center;
+  padding-bottom: 12px;
+}
+
+.sideBarContainer.collapsed .userProfile {
+  justify-content: center;
+}
+
+.sidebarWrapper {
+  padding: 24px 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Logo Section */
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.logoIcon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 16px;
+  position: relative;
+}
+
+.logoIcon::after {
+  content: 'TW';
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.logoText {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.025em;
+}
+
+/* Workspace Section */
+.workspaceSection {
+  margin-bottom: 24px;
+}
+
+.workspaceSection .sectionTitle {
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+  padding-left: 12px;
+}
+
+.workspace {
+  margin-bottom: 25px;
+}
+
+/* Menu Items */
+.sidebarMenuItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.sidebarMenuItem:hover {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.sidebarMenuItem.active {
+  background-color: #eff6ff;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.sidebarMenuItem svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* New Project Button */
+.ProjectCreationButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  margin: 10px 0;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  width: 100%;
+}
+
+.ProjectCreationButton:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.ProjectCreationButton svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Tools Section */
+.toolsSection {
+  margin-top: auto;
+  padding-top: 24px;
+  border-top: 1px solid #f3f4f6;
+}
+
+.toolsTitle {
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+  padding-left: 12px;
+}
+
+/* User Profile Section */
+.userProfile {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #f3f4f6;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.userAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.userInfo {
+  flex: 1;
+}
+
+.userName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 2px;
+}
+
+.userEmail {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* Toggle Button */
+.toggleButton {
+  position: absolute;
+  top: 24px;
+  right: -12px;
+  width: 24px;
+  height: 24px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.toggleButton:hover {
+  background-color: #f9fafb;
+}
+
+.toggleButton svg {
+  width: 14px;
+  height: 14px;
+  color: #6b7280;
+}
+
+/* Scrollbar Styling */
+.sideBarContainer::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sideBarContainer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sideBarContainer::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 2px;
+}
+
+.sideBarContainer::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Project Creation Button Loading State */
+.ProjectCreationButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #9ca3af !important;
+}
+
+.ProjectCreationButton.loading {
+  position: relative;
+  color: transparent;
+}
+
+.ProjectCreationButton.loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  margin: auto;
+  border: 2px solid transparent;
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: button-loading-spinner 1s ease infinite;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes button-loading-spinner {
+  from {
+    transform: translate(-50%, -50%) rotate(0turn);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(1turn);
+  }
+}
+
+

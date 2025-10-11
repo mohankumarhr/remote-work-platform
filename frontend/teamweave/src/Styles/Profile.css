@@ -1,0 +1,159 @@
+/* Profile Layout */
+.profileWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  min-height: 70vh;
+  padding: 40px 0;
+}
+
+@media (max-width: 900px) {
+  .profileWrapper {
+    flex-direction: column;
+    gap: 24px;
+    padding: 20px;
+  }
+}
+
+/* Profile Picture Styling */
+.profilePictureWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.profileImage {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 2px solid #e5e7eb;
+  background: #f3f4f6;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Profile Details Wrapper */
+.profileDetailsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex-grow: 1;
+}
+
+/* Section Title Styling */
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 16px;
+}
+
+/* Profile Fields */
+.profileFields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.profileFields label {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #2563eb;
+  letter-spacing: 0.01em;
+  transition: color 0.2s ease;
+}
+
+.profileFields input {
+  padding: 12px 16px;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  background: #f9fafb;
+  color: #1e293b;
+  outline: none;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 4px rgba(37, 99, 235, 0.1);
+}
+
+/* Focused Input State */
+.profileFields input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+  background: #fff;
+}
+
+/* Disable input when not editable */
+.profileFields input:disabled {
+  background: #e5e7eb;
+  cursor: not-allowed;
+}
+
+/* Edit Button Styling */
+.editButtonWrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.editButton {
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #2563eb;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.editButton:hover {
+  background-color: #1d4ed8;
+}
+
+.editButton:focus {
+  outline: none;
+}
+
+/* Profile Action and Cancel Button Styling */
+.profile-action-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 10px 32px;
+  font-weight: 600;
+  font-size: 1.08rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1.5px 8px rgba(37, 99, 235, 0.08);
+  margin: 0 4px;
+}
+
+.profile-action-btn:hover {
+  background: #1d4ed8;
+  color: #fff;
+}
+
+.profile-cancel-btn {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.profile-cancel-btn:hover {
+  background: #d1d5db;
+  color: #1e293b;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 900px) {
+  .profileFields input {
+    font-size: 0.98rem;
+    padding: 10px 14px;
+  }
+  .profileFields label {
+    font-size: 1rem;
+  }
+}
