@@ -1,0 +1,206 @@
+version: '3.8'
+
+services:
+  # ==========================
+  # Kafka and Zookeeper
+  # ==========================
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  # ==========================
+  # MySQL Database
+  # ==========================
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: remote_work_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # ==========================
+  # Auth Service
+  # ==========================
+  auth-service:
+    build: ./Backend/auth-service
+    container_name: auth-service
+    depends_on:
+      - mysql
+      - kafka
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/remote_work_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      KAFKA_BROKER: kafka:9092
+    ports:
+      - "8081:8081"
+
+  # ==========================
+  # User Service
+  # ==========================
+  user-service:
+    build: ./Backend/user-service
+    container_name: user-service
+    depends_on:
+      - mysql
+      - kafka
+      - auth-service
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/remote_work_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      KAFKA_BROKER: kafka:9092
+    ports:
+      - "8082:8082"
+
+  # ==========================
+  # Team Service
+  # ==========================
+  team-service:
+    build: ./Backend/team-service
+    container_name: team-service
+    depends_on:
+      - mysql
+      - kafka
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/remote_work_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      KAFKA_BROKER: kafka:9092
+    ports:
+      - "8083:8083"
+
+  # ==========================
+  # Task Service
+  # ==========================
+  task-service:
+    build: ./Backend/task-service
+    container_name: task-service
+    depends_on:
+      - mysql
+      - kafka
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/remote_work_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      KAFKA_BROKER: kafka:9092
+    ports:
+      - "8084:8084"
+
+  # ==========================
+  # Chat Service
+  # ==========================
+  chat-service:
+    build: ./Backend/chat-service
+    container_name: chat-service
+    depends_on:
+      - mysql
+      - kafka
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/remote_work_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      KAFKA_BROKER: kafka:9092
+    ports:
+      - "8085:8085"
+
+  # ==========================
+  # File Service
+  # ==========================
+  file-service:
+    build: ./Backend/file-service
+    container_name: file-service
+    depends_on:
+      - mysql
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/remote_work_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8086:8086"
+
+  # ==========================
+  # Notification Service
+  # ==========================
+  notification-service:
+    build: ./Backend/notification-service
+    container_name: notification-service
+    depends_on:
+      - kafka
+      - mysql
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/remote_work_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      KAFKA_BROKER: kafka:9092
+    ports:
+      - "8087:8087"
+
+  # ==========================
+  # Call Service (Video)
+  # ==========================
+  call-service:
+    build: ./Backend/CallService
+    container_name: call-service
+    depends_on:
+      - mysql
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/remote_work_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8089:8089"
+
+  # ==========================
+  # Frontend (React)
+  # ==========================
+  frontend:
+    build: ./frontend/teamweave
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - auth-service
+      - user-service
+      - team-service
+      - task-service
+      - chat-service
+      - file-service
+      - notification-service
+      - call-service
+
+volumes:
+  mysql_data:
