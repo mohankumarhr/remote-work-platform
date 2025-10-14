@@ -63,7 +63,10 @@ jobs:
 
       # ---------- Docker Build ----------
       - name: Build Docker images
-        run: docker compose build
+        run: |
+          cd ..
+          cd docker
+          docker compose build
 
       # (Optional) Push to Docker Hub
       - name: Login to Docker Hub
