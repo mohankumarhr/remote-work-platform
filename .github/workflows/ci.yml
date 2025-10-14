@@ -38,6 +38,11 @@ jobs:
       - name: Build all Spring Boot services
         run: |
           cd Backend
+          
+          cd commonjwt
+          mvn clean install -DskipTests
+          cd ..
+          
           for dir in */ ; do
             cd "$dir"
             mvn clean package -DskipTests
