@@ -45,7 +45,7 @@ services:
   # Auth Service
   # ==========================
   auth-service:
-    build: ./Backend/auth-service
+    build: ../Backend/auth-service
     container_name: auth-service
     depends_on:
       - mysql
@@ -63,7 +63,7 @@ services:
   # User Service
   # ==========================
   user-service:
-    build: ./Backend/user-service
+    build: ../Backend/user-service
     container_name: user-service
     depends_on:
       - mysql
@@ -82,7 +82,7 @@ services:
   # Team Service
   # ==========================
   team-service:
-    build: ./Backend/team-service
+    build: ../Backend/team-service
     container_name: team-service
     depends_on:
       - mysql
@@ -100,7 +100,7 @@ services:
   # Task Service
   # ==========================
   task-service:
-    build: ./Backend/task-service
+    build: ../Backend/task-service
     container_name: task-service
     depends_on:
       - mysql
@@ -118,7 +118,7 @@ services:
   # Chat Service
   # ==========================
   chat-service:
-    build: ./Backend/chat-service
+    build: ../Backend/chat-service
     container_name: chat-service
     depends_on:
       - mysql
@@ -136,7 +136,7 @@ services:
   # File Service
   # ==========================
   file-service:
-    build: ./Backend/file-service
+    build: ../Backend/file-service
     container_name: file-service
     depends_on:
       - mysql
@@ -152,7 +152,7 @@ services:
   # Notification Service
   # ==========================
   notification-service:
-    build: ./Backend/notification-service
+    build: ../Backend/notification-service
     container_name: notification-service
     depends_on:
       - kafka
@@ -170,7 +170,7 @@ services:
   # Call Service (Video)
   # ==========================
   call-service:
-    build: ./Backend/CallService
+    build: ../Backend/CallService
     container_name: call-service
     depends_on:
       - mysql
@@ -186,7 +186,7 @@ services:
   # Frontend (React)
   # ==========================
   frontend:
-    build: ./frontend/teamweave
+    build: ../frontend/teamweave
     container_name: frontend
     ports:
       - "3000:3000"
