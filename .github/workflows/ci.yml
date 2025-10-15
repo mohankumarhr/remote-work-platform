@@ -63,7 +63,9 @@ jobs:
 
       # ---------- Docker Build ----------
       - name: Build Docker images
-        run: docker compose -f docker/docker-compose.yml build
+        run: |
+          docker compose -f docker/docker-compose.yml build --no-cache --progress=plain
+      
 
       # (Optional) Push to Docker Hub
       - name: Login to Docker Hub
