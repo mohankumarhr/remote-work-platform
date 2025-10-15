@@ -21,8 +21,11 @@ WORKDIR /app
 ARG MAVEN_OPTS
 ENV MAVEN_OPTS=$MAVEN_OPTS
 
+# Copy Maven repo from common-lib stage
+COPY --from=common-lib-build /root/.m2 /root/.m2
+
 # Copy pom.xml and download dependencies first (for caching)
-COPY pom.xml .
+COPY pom.xml ./
 RUN mvn dependency:go-offline -B
 
 # Copy the source code and build
