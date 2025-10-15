@@ -1,9 +1,7 @@
 version: '3.8'
 
 services:
-  # ==========================
-  # Kafka and Zookeeper
-  # ==========================
+  # Kafka & Zookeeper
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
     container_name: zookeeper
@@ -23,12 +21,9 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
-  # ==========================
-  # MySQL Database
-  # ==========================
+  # MySQL
   mysql:
     image: mysql:8.0
     container_name: mysql
@@ -41,9 +36,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
 
-  # ==========================
-  # Auth Service
-  # ==========================
+  # Spring Boot services
   auth-service:
     build: ../Backend/auth-service
     container_name: auth-service
@@ -59,9 +52,6 @@ services:
     ports:
       - "8081:8081"
 
-  # ==========================
-  # User Service
-  # ==========================
   user-service:
     build: ../Backend/user-service
     container_name: user-service
@@ -78,9 +68,6 @@ services:
     ports:
       - "8082:8082"
 
-  # ==========================
-  # Team Service
-  # ==========================
   team-service:
     build: ../Backend/team-service
     container_name: team-service
@@ -96,9 +83,6 @@ services:
     ports:
       - "8083:8083"
 
-  # ==========================
-  # Task Service
-  # ==========================
   task-service:
     build: ../Backend/task-service
     container_name: task-service
@@ -114,9 +98,6 @@ services:
     ports:
       - "8084:8084"
 
-  # ==========================
-  # Chat Service
-  # ==========================
   chat-service:
     build: ../Backend/chat-service
     container_name: chat-service
@@ -132,9 +113,6 @@ services:
     ports:
       - "8085:8085"
 
-  # ==========================
-  # File Service
-  # ==========================
   file-service:
     build: ../Backend/file-service
     container_name: file-service
@@ -148,9 +126,6 @@ services:
     ports:
       - "8086:8086"
 
-  # ==========================
-  # Notification Service
-  # ==========================
   notification-service:
     build: ../Backend/notification-service
     container_name: notification-service
@@ -166,9 +141,6 @@ services:
     ports:
       - "8087:8087"
 
-  # ==========================
-  # Call Service (Video)
-  # ==========================
   call-service:
     build: ../Backend/CallService
     container_name: call-service
@@ -182,16 +154,14 @@ services:
     ports:
       - "8089:8089"
 
-  # ==========================
-  # Frontend (React)
-  # ==========================
+  # Frontend (Vite)
   frontend:
-    build: ../frontend/teamweave
+    build:
+      context: ../frontend/teamweave
+      dockerfile: Dockerfile
     container_name: frontend
     ports:
-      - "3000:3000"
-    stdin_open: true
-    tty: true
+      - "80:80"
     depends_on:
       - auth-service
       - user-service

@@ -1,5 +1,5 @@
 # ===============================
-# Stage 1: Build React app
+# Stage 1: Build Vite app
 # ===============================
 FROM node:20-alpine AS build
 WORKDIR /app
@@ -8,12 +8,12 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-# Copy the source code
+# Copy source code
 COPY . .
 
-# Build the React app for production
-RUN npm run build || (echo "❌ React build failed! Showing logs..." && cat /app/npm-debug.log || true && exit 1)
-RUN ls -la
+# Build the Vite app for production
+RUN npm run build
+RUN ls -la dist
 
 # ===============================
 # Stage 2: Serve with Nginx
@@ -21,17 +21,14 @@ RUN ls -la
 FROM nginx:1.25-alpine
 WORKDIR /usr/share/nginx/html
 
-# Remove default Nginx static files
+# Remove default Nginx files
 RUN rm -rf ./*
 
-# Copy React build files to Nginx
+# Copy Vite build output
 COPY --from=build /app/dist .
 
-# Copy custom Nginx configuration (optional)
+# Optional: custom Nginx config for SPA routing
 # COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose port 3000
-EXPOSE 3000
-
-# Start Nginx server
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
