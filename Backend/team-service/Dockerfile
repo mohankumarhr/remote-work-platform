@@ -1,4 +1,17 @@
 # ===============================
+# Stage 0: Build and install common-lib
+# ===============================
+FROM maven:3.9.6-eclipse-temurin-17 AS common-lib-build
+WORKDIR /app
+
+# Copy common-lib pom and source
+COPY ../common-lib/pom.xml ./
+COPY ../common-lib/src ./src
+
+# Install to local Maven repo inside container
+RUN mvn clean install -DskipTests
+
+# ===============================
 # Stage 1: Build the application
 # ===============================
 FROM maven:3.9.6-eclipse-temurin-17 AS build
