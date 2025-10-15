@@ -12,7 +12,8 @@ RUN npm install
 COPY . .
 
 # Build the React app for production
-RUN npm run build
+RUN npm run build || (echo "React build failed!" && ls -la && exit 1)
+RUN ls -la build
 
 # ===============================
 # Stage 2: Serve with Nginx
