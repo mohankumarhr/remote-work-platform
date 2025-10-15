@@ -1,3 +1,7 @@
+
+ARG MAVEN_OPTS
+ENV MAVEN_OPTS=$MAVEN_OPTS
+
 # ===============================
 # Stage 1: Build the application
 # ===============================
