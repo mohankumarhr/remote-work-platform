@@ -25,7 +25,7 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 
 # Copy React build files to Nginx
-COPY --from=build /app/build .
+COPY --from=build /app/dist .
 
 # Copy custom Nginx configuration (optional)
 # COPY nginx.conf /etc/nginx/conf.d/default.conf
