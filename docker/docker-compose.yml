@@ -41,6 +41,9 @@ services:
     build:
       context: ../Backend
       dockerfile: ./auth-service/Dockerfile
+      args:
+        SERVICE_NAME: auth-service
+        PORT: 8081
     container_name: auth-service
     depends_on:
       - mysql
@@ -58,6 +61,9 @@ services:
     build:
       context: ../Backend
       dockerfile: ./user-service/Dockerfile
+      args:
+        SERVICE_NAME: user-service
+        PORT: 8082
     container_name: user-service
     depends_on:
       - mysql
@@ -76,6 +82,9 @@ services:
     build:
       context: ../Backend
       dockerfile: ./team-service/Dockerfile
+      args:
+        SERVICE_NAME: team-service
+        PORT: 8083
     container_name: team-service
     depends_on:
       - mysql
@@ -93,6 +102,9 @@ services:
     build:
       context: ../Backend
       dockerfile: ./task-service/Dockerfile
+      args:
+        SERVICE_NAME: task-service
+        PORT: 8084
     container_name: task-service
     depends_on:
       - mysql
@@ -110,6 +122,9 @@ services:
     build:
       context: ../Backend
       dockerfile: ./chat-service/Dockerfile
+      args:
+        SERVICE_NAME: chat-service
+        PORT: 8085
     container_name: chat-service
     depends_on:
       - mysql
@@ -127,6 +142,9 @@ services:
     build:
       context: ../Backend
       dockerfile: ./file-service/Dockerfile
+      args:
+        SERVICE_NAME: file-service
+        PORT: 8086
     container_name: file-service
     depends_on:
       - mysql
@@ -142,6 +160,9 @@ services:
     build:
       context: ../Backend
       dockerfile: ./notification-service/Dockerfile
+      args:
+        SERVICE_NAME: notification-service
+        PORT: 8087
     container_name: notification-service
     depends_on:
       - kafka
@@ -159,6 +180,9 @@ services:
     build:
       context: ../Backend
       dockerfile: ./CallService/Dockerfile
+      args:
+        SERVICE_NAME: CallService
+        PORT: 8089
     container_name: call-service
     depends_on:
       - mysql
