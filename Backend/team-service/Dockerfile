@@ -5,8 +5,8 @@ FROM maven:3.9.6-eclipse-temurin-17 AS common-lib-build
 WORKDIR /app
 
 # Copy commonjwt module (shared library)
-COPY ../commonjwt/pom.xml ./pom.xml
-COPY ../commonjwt/src ./src
+COPY commonjwt/pom.xml ./pom.xml
+COPY commonjwt/src ./src
 
 # Install to local Maven repo inside the container
 RUN mvn clean install -DskipTests
