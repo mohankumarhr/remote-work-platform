@@ -1,47 +1,50 @@
 # ===============================
-# Stage 0: Build and install common-lib
+# Stage 0: Build and install commonjwt
 # ===============================
 FROM maven:3.9.6-eclipse-temurin-17 AS common-lib-build
 WORKDIR /app
 
-# Copy common-lib pom and source
-COPY ../common-lib/pom.xml ./
-COPY ../common-lib/src ./src
+# Copy commonjwt module (shared library)
+COPY commonjwt/pom.xml ./pom.xml
+COPY commonjwt/src ./src
 
-# Install to local Maven repo inside container
+# Install to local Maven repo inside the container
 RUN mvn clean install -DskipTests
 
+
 # ===============================
-# Stage 1: Build the application
+# Stage 1: Build the microservice
 # ===============================
 FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
 
+ARG SERVICE_NAME
 ARG MAVEN_OPTS
 ENV MAVEN_OPTS=$MAVEN_OPTS
 
 # Copy Maven repo from common-lib stage
 COPY --from=common-lib-build /root/.m2 /root/.m2
 
-# Copy pom.xml and download dependencies first (for caching)
-COPY pom.xml ./
+# Copy service pom.xml and resolve dependencies
+COPY ${SERVICE_NAME}/pom.xml ./pom.xml
 RUN mvn dependency:go-offline -B
 
-# Copy the source code and build
-COPY src ./src
+# Copy the service source code and build
+COPY ${SERVICE_NAME}/src ./src
 RUN mvn clean package -DskipTests
 
+
 # ===============================
-# Stage 2: Run the application
+# Stage 2: Run the microservice
 # ===============================
 FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
-# Copy jar from the build stage
+# Copy built JAR file from build stage
 COPY --from=build /app/target/*.jar app.jar
 
-# Expose the service port
-EXPOSE 8082
+# Expose the port (change if needed)
+ARG PORT=8080
+EXPOSE ${PORT}
 
-# Run the Spring Boot application
 ENTRYPOINT ["java", "-jar", "app.jar"]
