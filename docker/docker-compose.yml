@@ -38,7 +38,9 @@ services:
 
   # Spring Boot services
   auth-service:
-    build: ../Backend/auth-service
+    build:
+      context: ../Backend
+      dockerfile: ./auth-service/Dockerfile
     container_name: auth-service
     depends_on:
       - mysql
@@ -53,7 +55,9 @@ services:
       - "8081:8081"
 
   user-service:
-    build: ../Backend/user-service
+    build:
+      context: ../Backend
+      dockerfile: ./user-service/Dockerfile
     container_name: user-service
     depends_on:
       - mysql
@@ -69,7 +73,9 @@ services:
       - "8082:8082"
 
   team-service:
-    build: ../Backend/team-service
+    build:
+      context: ../Backend
+      dockerfile: ./team-service/Dockerfile
     container_name: team-service
     depends_on:
       - mysql
@@ -84,7 +90,9 @@ services:
       - "8083:8083"
 
   task-service:
-    build: ../Backend/task-service
+    build:
+      context: ../Backend
+      dockerfile: ./task-service/Dockerfile
     container_name: task-service
     depends_on:
       - mysql
@@ -99,7 +107,9 @@ services:
       - "8084:8084"
 
   chat-service:
-    build: ../Backend/chat-service
+    build:
+      context: ../Backend
+      dockerfile: ./chat-service/Dockerfile
     container_name: chat-service
     depends_on:
       - mysql
@@ -114,7 +124,9 @@ services:
       - "8085:8085"
 
   file-service:
-    build: ../Backend/file-service
+    build:
+      context: ../Backend
+      dockerfile: ./file-service/Dockerfile
     container_name: file-service
     depends_on:
       - mysql
@@ -127,7 +139,9 @@ services:
       - "8086:8086"
 
   notification-service:
-    build: ../Backend/notification-service
+    build:
+      context: ../Backend
+      dockerfile: ./notification-service/Dockerfile
     container_name: notification-service
     depends_on:
       - kafka
@@ -142,7 +156,9 @@ services:
       - "8087:8087"
 
   call-service:
-    build: ../Backend/CallService
+    build:
+      context: ../Backend
+      dockerfile: ./CallService/Dockerfile
     container_name: call-service
     depends_on:
       - mysql
