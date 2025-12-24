@@ -1,7 +1,7 @@
 import React from 'react'
 import VideoCall from '../Components/VideoCall'
 import Cookies from "js-cookie";
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 function VideoCallPage() {
 
@@ -25,15 +25,11 @@ function VideoCallPage() {
     
   };
 
-  const {peerId} = useParams();
-
   return (
     <div>
       <VideoCall 
         userId={getCurrentUserId()}
         signalingServerUrl={`ws://localhost:8089/ws/video?userId=${getCurrentUserId()}`}
-        peerId = {peerId}
-        // targets = {[13]}
       />
     </div>
   )

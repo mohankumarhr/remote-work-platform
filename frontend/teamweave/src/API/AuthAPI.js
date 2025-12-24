@@ -3,6 +3,7 @@ import Cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
 
 const base_url = "http://localhost:8081/auth"
+const base_url_verify = "http://localhost:8081/verification"
 
 
 export const handleLogin = async (LoginDetails) => {
@@ -10,51 +11,42 @@ export const handleLogin = async (LoginDetails) => {
     try {
         const response = await axios.post(base_url + "/login", LoginDetails)
         console.log("response", response.data)
-        
+
         if (response.data.response && response.data.response.token) {
             // Check if email is verified
-            if (response.data.response.emailVerified) {
-                // Set cookie with 10 hours expiration
-                Cookies.set('jwtToken', response.data.response.token, { 
-                    expires: 10/24,
-                    path: '/',
-                    sameSite: 'Lax'
-                })
-                console.log("Cookie set successfully:", Cookies.get('jwtToken'))
-                return { success: true, message: "Login successful", data: response.data.response }
-            } else {
-                throw new Error("Email not verified")
-            }
+            // if (response.data.response.emailVerified) {
+            // Set cookie with 10 hours expiration
+            Cookies.set('jwtToken', response.data.response.token, {
+                expires: 10 / 24,
+                path: '/',
+                sameSite: 'Lax'
+            })
+            console.log("Cookie set successfully:", Cookies.get('jwtToken'))
+            return { success: true, message: "Login successful", data: response.data.response }
+            // } else {
+            //     throw new Error("Email not verified")
+            // }
         } else {
             throw new Error("Login failed - no token received")
         }
-        
+
     } catch (error) {
         console.log("Login error:", error)
         throw error
     }
 }
 
-export const handleRegister = async (RegisterDetails, setLoader, toast, navigate) => {
+export const handleRegister = async (RegisterDetails) => {
     console.log("registerdetails", RegisterDetails)
     try {
-        setLoader(true)
+
         const response = await axios.post(base_url + "/register", RegisterDetails)
         console.log("response", response.data)
-        
-        if (response.data.success) {
-            toast.success("Registration successful")
-            setLoader(false)
-            navigate('/login')
-        } else {
-            setLoader(false)
-            toast.error("Registration failed")
-        }
-        
+        return response.data
+
     } catch (error) {
-        setLoader(false)
-        toast.error("Registration failed - please try again")
         console.log("error", error)
+        throw error
     }
 }
 
@@ -76,4 +68,72 @@ export const getToken = () => {
 export const isAuthenticated = () => {
     const token = getToken()
     return token !== undefined && token !== null
+}
+
+export const resendVerification = async (email) => {
+    try {
+        const response = await axios.get(base_url + '/resendverification', { params: { email } })
+        return response.data
+    } catch (err) {
+        console.error('resendVerification error', err)
+        throw err
+    }
+}
+
+export const getUserDetailsFromToken = async (id) => {
+    try {
+        const response = await axios.get(base_url + '/getUser', {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${Cookies.get("jwtToken")}`
+            },
+            params: { id }  // <-- send taskId as query param
+        })
+        return response.data
+    } catch (err) {
+        console.error('resendVerification error', err)
+        throw err
+    }
+}
+
+// export const getOpt = async (username)=>{
+//     try {
+//         const response = await axios.get(base_url + '/forgotpassword', {
+//             params: { username }  // <-- send taskId as query param
+//         })
+//         return response.data
+//     } catch (err) {
+//         console.error('forgotpassword error', err)
+//         throw err
+//     }
+// }
+
+// New helper - request OTP for password reset (keeps existing GET behavior)
+export const requestPasswordOtp = async (username) => {
+    try {
+        const response = await axios.get(base_url + '/forgotpassword', {
+            params: { username }
+        })
+        return response.data
+    } catch (err) {
+        console.error('requestPasswordOtp error', err)
+        throw err
+    }
+}
+
+// New helper - reset password with OTP. Backend endpoint expected at POST /resetpassword
+export const resetPasswordWithOtp = async ({ username, otp, newPassword }) => {
+    try {
+        const response = await axios.get(base_url_verify + '/verifyotp', {
+            params: {
+                username: username,
+                otp: otp,
+                password: newPassword
+            }
+        })
+        return response.data
+    } catch (err) {
+        console.error('resetPasswordWithOtp error', err)
+        throw err
+    }
 }

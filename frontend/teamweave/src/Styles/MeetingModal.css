@@ -1,0 +1,195 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100; /* ensure modal overlays the navbar (navbar z-index:999) */
+  backdrop-filter: blur(4px);
+}
+
+.modal-card {
+  width: 820px;
+  max-width: 96vw;
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 10px 40px rgba(2, 6, 23, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+}
+
+.modal-header h3 {
+  margin: 0
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+.modal-body {
+  max-height: 460px;
+  overflow: auto;
+  padding: 8px 0
+}
+
+.two-column {
+  display: flex;
+  gap: 18px
+}
+
+.teams-column,
+.members-column {
+  flex: 1;
+  background: #fbfdff;
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid #eef2ff
+}
+
+.teams-column h4,
+.members-column h4 {
+  margin: 0 0 8px 0
+}
+
+.team-item,
+.member-item {
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 6px
+}
+
+.team-name {
+  margin-left: 8px;
+  font-weight: 600
+}
+
+.team-count {
+  float: right;
+  color: #6b7280
+}
+
+/* .member-name {
+  margin-left: 8px
+} */
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 10px
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #111;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed
+}
+
+.member-multiselect .member-search {
+  margin-bottom: 10px
+}
+
+.member-multiselect .member-search input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #e6eefc;
+  background: #fff
+}
+
+.selected-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px
+}
+
+.chip {
+  background: #eef2ff;
+  padding: 6px 10px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px
+}
+
+.chip-remove {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px
+}
+
+.member-list {
+  list-style: none;
+  padding: 0;
+  margin: 0
+}
+
+.member-item {
+  border-bottom: 1px solid #f1f5f9;
+  padding: 10px 0
+}
+
+.member-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center
+}
+
+.member-info {
+  display: flex;
+  flex-direction: column
+}
+
+.member-name {
+  font-weight: 600
+}
+
+.member-role {
+  font-size: 12px;
+  color: #6b7280
+}
+
+.btn-add {
+  background: #2563eb;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer
+}
+
+.btn-add[disabled] {
+  background: #94b3ff;
+  cursor: default
+}

@@ -83,8 +83,13 @@ public class ProjectService {
             projectDTO.setSubject(project.getSubject());
             projectDTO.setTeamId(project.getTeamId());
             projectDTO.setStartDate(project.getStartDate());
-            projectDTO.setTasks(taskService.getTasksByProjectId(projectId));
             projectDTO.setDueDate(project.getDueDate());
+            List<TaskDTO> tasks = taskService.getTasksByProjectId(project.getId());
+            projectDTO.setTasks(tasks);
+            int progress = calculateProgress(tasks);
+            projectDTO.setProgress(progress);
+            String status = getStatus(progress, project.getStartDate(), project.getDueDate());
+            projectDTO.setStatus(status);
 
             return ResponseEntity.ok(projectDTO);
         } catch (Exception e) {

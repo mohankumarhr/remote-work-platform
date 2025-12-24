@@ -1,10 +1,6 @@
 package com.teamweave.authservice.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.*;
 
 
 @Entity
@@ -13,8 +9,12 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(unique = true, nullable = false)
     private String username;
     private String password;
+
+    @Column(unique = true, nullable = false)
     private String email;
     private boolean emailVerified = false;
     private String role; // e.g., "USER", "ADMIN", etc.

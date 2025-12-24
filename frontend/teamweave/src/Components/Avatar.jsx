@@ -43,3 +43,6 @@ export default function BackgroundLetterAvatars(props) {
     </Stack>
   );
 }
+
+
+

@@ -108,7 +108,7 @@ function Sidebar({ isCollapsed }) {
                             <FiMessageSquare />
                             <span>Messages</span>
                         </div>
-                        <div className="sidebarMenuItem">
+                        <div className={`sidebarMenuItem ${location.pathname === '/meetings' ? 'active' : ''}`} onClick={() => handleNavigation('/meetings')}>
                             <CiVideoOn />
                             <span>Meetings</span>
                         </div>

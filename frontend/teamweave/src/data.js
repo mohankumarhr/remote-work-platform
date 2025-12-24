@@ -102,6 +102,12 @@ export const meetingsData = [
         title: "Sprint Planning",
         participants: "Dev Team • 2 hours",
         time: "2025-07-27 16:14:22.676612",
+    },
+    {
+        id: 3,
+        title: "Sprint Planning",
+        participants: "Dev Team • 2 hours",
+        time: "2025-07-27 16:14:22.676612",
     }
 ];
 
@@ -503,41 +509,54 @@ export const stringToColor = (string) => {
     let hash = 0;
     let i;
 
+    try {
+        for (i = 0; i < string.length; i += 1) {
+            hash = string.charCodeAt(i) + ((hash << 5) - hash);
+        }
+
+        let color = '#';
+
+        for (i = 0; i < 3; i += 1) {
+            const value = (hash >> (i * 8)) & 0xff;
+            color += `00${value.toString(16)}`.slice(-2);
+        }
+        return color;
+    }catch(err){
+        console.error(err)
+    }
+
     /* eslint-disable no-bitwise */
-    for (i = 0; i < string.length; i += 1) {
-        hash = string.charCodeAt(i) + ((hash << 5) - hash);
-    }
 
-    let color = '#';
-
-    for (i = 0; i < 3; i += 1) {
-        const value = (hash >> (i * 8)) & 0xff;
-        color += `00${value.toString(16)}`.slice(-2);
-    }
     /* eslint-enable no-bitwise */
 
-    return color;
+    
 }
 
 export const getInitials = (name) => {
-    return name.split(' ').length > 1 ? `${name.split(' ')[0][0]}${name.split(' ')[1][0]}` : `${name.split(' ')[0][0]}`;
+
+    try{
+        return name.split(' ').length > 1 ? `${name.split(' ')[0][0]}${name.split(' ')[1][0]}` : `${name.split(' ')[0][0]}`;
+    }catch(err){
+        console.error(err)
+    }
+    
 }
 
 export const getCurrentUserId = () => {
     const token = Cookies.get("jwtToken")
     let userId = null
-  
+
     if (token) {
-      // Decode JWT token to get user ID
-      const payload = JSON.parse(atob(token.split('.')[1]))
-      userId = payload.userId || payload.id || payload.sub
-      console.log("userId", userId)
-      return userId
+        // Decode JWT token to get user ID
+        const payload = JSON.parse(atob(token.split('.')[1]))
+        userId = payload.userId || payload.id || payload.sub
+        console.log("userId", userId)
+        return userId
     }
-  
+
     if (!userId) {
-      console.error('Unable to get user ID from token')
-      return 0
+        console.error('Unable to get user ID from token')
+        return 0
     }
-    
-  };
+
+};

@@ -3,13 +3,19 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FiUser, FiLock, FiMail, FiEye, FiEyeOff } from 'react-icons/fi'
 import '../Styles/Auth.css'
 import authImg from '../assets/auth.png'
+import { useDispatch } from 'react-redux'
+import { handleRegister } from '../API/AuthAPI'
 
 function Register() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+
     const [formData, setFormData] = useState({
         username: '',
         email: '',
-        password: ''
+        password: '',
+        role: "USER"
     })
     const [showPassword, setShowPassword] = useState(false)
     const [errors, setErrors] = useState({})
@@ -64,10 +70,10 @@ function Register() {
             try {
                 // Here you would make your API call
                 // For now, we'll simulate a registration
-                await new Promise(resolve => setTimeout(resolve, 1000))
-                
+                const reponce = await handleRegister(formData);
+                console.log(reponce)
                 // Navigate to login on successful registration
-                navigate('/login')
+                navigate(`/verify?email=${formData.email}`)
             } catch (error) {
                 setErrors({ general: 'Registration failed. Please try again.' })
             } finally {

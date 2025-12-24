@@ -1,0 +1,88 @@
+.meetingsPage {
+  padding: 20px;
+}
+.meetingsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.meetingFormCard {
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  margin-bottom: 16px;
+}
+
+/* Modal styles for popup form */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+}
+.modal-card {
+  background: #fff;
+  width: 640px;
+  max-width: calc(100% - 40px);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.2);
+  overflow: hidden;
+}
+.modal-header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #eef2f7 }
+.modal-body { padding:16px }
+.modal-close { background:transparent; border:0; font-size:20px; cursor:pointer }
+
+/* entrance/exit transitions */
+.modal-overlay {
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+.modal-overlay.open {
+  opacity: 1;
+}
+.modal-overlay.closing {
+  opacity: 0;
+}
+
+.modal-card {
+  transform: translateY(8px) scale(0.98);
+  opacity: 0;
+  transition: transform 220ms cubic-bezier(.2,.9,.2,1), opacity 220ms ease;
+}
+.modal-card.open {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+.modal-card.closing {
+  transform: translateY(6px) scale(0.99);
+  opacity: 0;
+}
+.formRow {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+.formRow label { font-weight: 600; margin-bottom: 6px }
+.formRow input, .formRow textarea, .formRow select {
+  padding: 8px 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+}
+.formActions { display:flex; gap:10px; justify-content:flex-end }
+.meetingsListCard { margin-top: 8px; }
+.meetingsListFull { list-style:none; padding:0; margin:0 }
+.meetingRow { display:flex; justify-content:space-between; padding:12px; border-bottom:1px solid #f3f4f6 }
+.meetingInfo { max-width: 75% }
+.meetingTitle { font-weight:700 }
+.meetingMeta { color:#6b7280; font-size:13px }
+.meetingDesc { margin-top:6px; color:#374151 }
+.meetingActions { display:flex; align-items:center; gap:8px }
+.meetingDuration { font-weight:600 }
+
+.btn-primary { background:#3b82f6; color:#fff; border:none; padding:8px 12px; border-radius:6px; cursor:pointer }
+.btn-secondary { background:#f3f4f6; color:#111827; border:none; padding:6px 10px; border-radius:6px; cursor:pointer }

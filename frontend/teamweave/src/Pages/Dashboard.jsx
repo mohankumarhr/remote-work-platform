@@ -8,14 +8,25 @@ import StatCard from '../Components/StatCard';
 import { AiOutlineTeam } from "react-icons/ai";
 import { FiCheckSquare, FiMessageSquare, FiClock } from "react-icons/fi";
 import { statsData, projectsData, activitiesData, meetingsData, quickActionsData } from '../data';
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchTeamsByUser } from '../API/teamAPI'
+import { fetchAssignedTasks } from '../API/taskAPI'
+import { fetchProjectById } from '../API/ProjectAPI'
+import { useNavigate } from 'react-router-dom'
 
 function Dashboard() {
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [isCollapsed, setIsSidebarCollapsed] = useState(false)
     const [showCreateTeam, setShowCreateTeam] = useState(false)
     const [showCreateTask, setShowCreateTask] = useState(false)
 
     const [localTime, setLocalTime] = useState(new Date().toLocaleTimeString());
+
+    const teamsData = useSelector((state) => state.getMemberedTeam.value)
+    const tasks = useSelector((state) => state.getAssignedTask.value)
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -25,6 +36,12 @@ function Dashboard() {
         // Cleanup interval on component unmount
         return () => clearInterval(timer);
     }, []);
+
+    useEffect(() => {
+        dispatch(fetchTeamsByUser())
+        dispatch(fetchAssignedTasks())
+        // console.log(apiTask)
+    }, [dispatch])
 
     // Icon mapping
     const iconMap = {
@@ -40,23 +57,23 @@ function Dashboard() {
             // Parse the datetime string
             const meetingDateTime = new Date(meeting.time);
             const currentDateTime = new Date();
-            
+
             // Calculate time difference in minutes
             const timeDifferenceMs = meetingDateTime.getTime() - currentDateTime.getTime();
             const timeDifferenceMinutes = Math.floor(timeDifferenceMs / (1000 * 60));
-            
+
             // Format time for display (e.g., "4:14 PM")
             const displayTime = meetingDateTime.toLocaleTimeString('en-US', {
                 hour: 'numeric',
                 minute: '2-digit',
                 hour12: true
             });
-            
+
             // Format date for display
             const today = new Date();
             const tomorrow = new Date(today);
             tomorrow.setDate(tomorrow.getDate() + 1);
-            
+
             let displayDate = '';
             if (meetingDateTime.toDateString() === today.toDateString()) {
                 displayDate = 'Today';
@@ -68,10 +85,10 @@ function Dashboard() {
                     day: 'numeric'
                 });
             }
-            
+
             // Determine button type based on time difference
             let buttonType, buttonText;
-            
+
             if (timeDifferenceMinutes < -30) {
                 // Meeting ended more than 30 minutes ago
                 buttonType = 'details';
@@ -85,7 +102,7 @@ function Dashboard() {
                 buttonType = 'details';
                 buttonText = 'Details';
             }
-            
+
             return {
                 ...meeting,
                 displayTime: displayDate === 'Today' ? displayTime : `${displayDate} ${displayTime}`,
@@ -97,48 +114,66 @@ function Dashboard() {
             };
         });
 
-    // Manipulate projects data before mapping
-    const processedProjects = projectsData
-        .slice(0, 3) // Limit to 3 projects
-        .map(project => {
-            // Calculate actual progress percentage
-            const actualProgress = Math.round((project.completedTasks / project.totalTasks) * 100);
+    // Fetch projects for the assigned tasks and manipulate projects data before mapping
+    const [fetchedProjects, setFetchedProjects] = useState([])
+    const [projectsLoading, setProjectsLoading] = useState(false)
 
-            // Determine status based on progress and due date
-            let computedStatus = project.status;
-            let computedStatusText = project.statusText;
-
-            // Add logic to determine status dynamically
-            if (actualProgress >= 90) {
-                computedStatus = 'ahead';
-                computedStatusText = 'Ahead';
-            } else if (actualProgress >= 70) {
-                computedStatus = 'onTrack';
-                computedStatusText = 'On Track';
-            } else if (actualProgress < 50) {
-                computedStatus = 'atRisk';
-                computedStatusText = 'At Risk';
+    const getProjectData = async (taskList = []) => {
+        try {
+            setProjectsLoading(true)
+            if (!Array.isArray(taskList) || taskList.length === 0) {
+                setFetchedProjects([])
+                return []
             }
 
-            // Add additional computed properties
-            return {
-                ...project,
-                actualProgress,
-                computedStatus,
-                computedStatusText,
-                remainingTasks: project.totalTasks - project.completedTasks,
-                isUrgent: actualProgress < 30,
-                progressCategory: actualProgress >= 75 ? 'high' : actualProgress >= 50 ? 'medium' : 'low'
-            };
-        })
-        // Sort by progress (highest first)
-        .sort((a, b) => b.actualProgress - a.actualProgress);
+            // collect unique projectIds from tasks
+            const projectIds = Array.from(new Set(taskList.map(t => t.projectId).filter(Boolean)))
+            if (projectIds.length === 0) {
+                setFetchedProjects([])
+                return []
+            }
+
+            // fetch all projects in parallel via dispatching the thunk actions
+            const results = await Promise.all(projectIds.map(async (id) => {
+                try {
+                    const action = await dispatch(fetchProjectById(id))
+                    // createAsyncThunk resolves to an action with payload on fulfilled
+                    return action.payload || null
+                } catch (err) {
+                    console.error(`Failed to fetch project ${id}:`, err)
+                    return null
+                }
+            }))
+
+            const projects = results.filter(p => p)
+            setFetchedProjects(projects)
+            return projects
+        } catch (err) {
+            console.error('Error fetching projects for dashboard:', err)
+            setFetchedProjects([])
+            return []
+        } finally {
+            setProjectsLoading(false)
+        }
+    }
+
+    // Call getProjectData whenever tasks update
+    useEffect(() => {
+        // fetch project details for the current tasks (no-op if tasks empty)
+        getProjectData(tasks)
+        console.log(fetchedProjects)
+    }, [tasks])
+
+    // Use fetched projects when available; otherwise fall back to static projectsData
+    const projectsList = (Array.isArray(fetchedProjects) && fetchedProjects.length > 0) ? fetchedProjects : projectsData
 
     const handleQuickAction = (action) => {
         if (action === 'createTeam') {
             setShowCreateTeam(true)
         } else if (action === 'addTask') {
             setShowCreateTask(true)
+        } else if (action === 'sendMessage'){
+            navigate("/chat")
         }
         // Add other quick actions here
         console.log('Quick action:', action)
@@ -168,6 +203,17 @@ function Dashboard() {
         // You could add success notification here
     }
 
+    const getStatNumber = (label) => {
+        switch (label) {
+            case "Active Teams":
+                return teamsData.length
+            case "Tasks Completed":
+                return tasks.filter((item) => item.status === 'COMPLETED').length
+            default:
+                return 0
+        }
+    }
+
     return (
         <div className='dashboardLayout'>
             <Sidebar isCollapsed={isCollapsed} />
@@ -188,7 +234,7 @@ function Dashboard() {
                             <StatCard
                                 key={index}
                                 label={stat.label}
-                                number={stat.number}
+                                number={getStatNumber(stat.label)}
                                 subtext={stat.subtext}
                                 description={stat.description}
                                 icon={iconMap[stat.iconType]}
@@ -203,14 +249,14 @@ function Dashboard() {
                         <div className='contentCard'>
                             <h3 className='contentCardTitle'>Project Progress</h3>
                             <div className='projectsList'>
-                                {processedProjects.map((project) => (
+                                {fetchedProjects.map((project) => (
                                     <div key={project.id} className='projectItem'>
                                         <div className='projectInfo'>
                                             <h4 className='projectName'>{project.name}</h4>
                                             <p className='projectTeam'>{project.team}</p>
                                             <div className='projectMeta'>
-                                                <span className={`projectStatus ${project.computedStatus}`}>
-                                                    {project.computedStatusText}
+                                                <span className={`projectStatus ${project.status}`}>
+                                                    {project.status}
                                                 </span>
                                                 <span className='projectDue'>{project.dueDate}</span>
                                                 {project.isUrgent && (
@@ -218,20 +264,21 @@ function Dashboard() {
                                                 )}
                                             </div>
                                         </div>
-                                        <div className='projectProgress'>
-                                            <div className='projectStats'>
-                                                <span className='taskCount'>{project.completedTasks}/{project.totalTasks} tasks</span>
-                                                <span className='progressText'>{project.actualProgress}%</span>
-                                                <span className='remainingTasks'>({project.remainingTasks} left)</span>
-                                            </div>
-                                            <div className='progressBar'>
-                                                <div className={`progressFill ${project.computedStatus}`} style={{ width: `${project.actualProgress}%` }}></div>
+                                        <div className='projectStats'>
+                                            <div className='progressInfo'>
+                                                <span className='progressText'>{project.progress}%</span>
+                                                <div className='progressBar'>
+                                                    <div
+                                                        className={`progressFill ${project.status}`}
+                                                        style={{ width: `${project.progress}%` }}
+                                                    ></div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 ))}
                             </div>
-                            <a href="#" className='viewAllLink'>View all projects →</a>
+                            <a href="/teams" className='viewAllLink'>View all projects →</a>
                         </div>
 
                         {/* Recent Activity */}
@@ -283,8 +330,8 @@ function Dashboard() {
                             <h3 className='contentCardTitle'>Quick Actions</h3>
                             <div className='quickActionsGrid'>
                                 {quickActionsData.map((action) => (
-                                    <button 
-                                        key={action.id} 
+                                    <button
+                                        key={action.id}
                                         className={`quickActionBtn ${action.action}`}
                                         onClick={() => handleQuickAction(action.action)}
                                     >
@@ -301,14 +348,14 @@ function Dashboard() {
             </div>
 
             {/* Create Team Modal */}
-            <CreateTeamModal 
+            <CreateTeamModal
                 isOpen={showCreateTeam}
                 onClose={closeCreateTeam}
                 onSubmit={handleTeamSubmit}
             />
 
             {/* Create Task Modal */}
-            <CreateTaskModal 
+            <CreateTaskModal
                 isOpen={showCreateTask}
                 onClose={closeCreateTask}
                 onSubmit={handleTaskSubmit}

@@ -9,6 +9,7 @@ import GetCreatedProjectsReducer from '../Redux/Projects/GetCreatedProjectsSlice
 import GetCreatedTasksReducer from '../Redux/Tasks/GetCreatedTasksSlice'
 import GetAllMessagesReducer from './Chat/chatSlice'
 import GetUserDetailsReducer from './Profile/GetUserSlice'
+import signalingReducer from './VideoCall/signalingSlice'
 
 const store = configureStore({
   reducer: {
@@ -21,7 +22,8 @@ const store = configureStore({
     getCreatedProjects : GetCreatedProjectsReducer,
     getCreatedTasks : GetCreatedTasksReducer,
     getAllMessages: GetAllMessagesReducer,
-    getUserDetails : GetUserDetailsReducer
+    getUserDetails : GetUserDetailsReducer,
+    signaling: signalingReducer
   }
 });
 

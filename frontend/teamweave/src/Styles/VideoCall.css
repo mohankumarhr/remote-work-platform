@@ -1,0 +1,143 @@
+/* ===== Video Call Layout ===== */
+.video-call-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #121212;
+  color: #fff;
+  height: 100vh;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* ===== Video Grid ===== */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 15px;
+  width: 100%;
+  /* max-width: 1000px; */
+}
+
+.video-card {
+  position: relative;
+  border: 1px solid #333;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #1e1e1e;
+}
+
+.video-element {
+  width: 100%;
+  height: 95vh;
+  object-fit: cover;
+  background: #000;
+  transition: opacity 0.3s ease;
+}
+
+.video-off {
+  opacity: 0.3;
+}
+
+.video-label {
+  position: absolute;
+  bottom: 8px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+
+/* ===== Controls ===== */
+.controls-bar {
+  position: absolute;
+  bottom: 30px;
+  background: #222;
+  border-radius: 50px;
+  padding: 10px 20px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+.control-btn {
+  border: none;
+  outline: none;
+  padding: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-btn:hover {
+  opacity: 0.9;
+}
+
+.btn-green {
+  background-color: #2ecc71;
+}
+
+.btn-red {
+  background-color: #e74c3c;
+}
+
+/* ===== Call Button ===== */
+.call-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #007bff;
+  border: none;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.call-btn:hover {
+  background-color: #005dc1;
+}
+
+/* ===== Call Ended Screen ===== */
+.call-ended {
+  background: #111;
+  color: #fff;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.call-ended h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.call-ended button {
+  background: #007bff;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.call-ended button:hover {
+  background: #005dc1;
+}

@@ -30,13 +30,18 @@ public class authController {
 
 
     @GetMapping("/resendverification")
-    public String ResendVerificationMail(@RequestParam String username) {
-        return userService.ResendVerificationMail(username);
+    public String ResendVerificationMail(@RequestParam String email) {
+        return userService.ResendVerificationMail(email);
     }
 
     @GetMapping("/forgotpassword")
     public String ForgotPassword(@RequestParam String username) {
         return userService.ForgotPassword(username);
+    }
+
+    @GetMapping("/getUser")
+    public Users getUserDetails(@RequestParam int id) {
+        return userService.getUserDetails(id);
     }
 
 }

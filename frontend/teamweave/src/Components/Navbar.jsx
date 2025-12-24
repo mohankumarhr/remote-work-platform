@@ -4,36 +4,31 @@ import { FiSidebar } from "react-icons/fi";
 import "../Styles/Navbar.css"
 import BackgroundLetterAvatars from './Avatar';
 import { useNavigate } from 'react-router-dom';
+import MeetingModal from './MeetingModal';
 
 function Navbar({ setIsSidebarCollapsed, isCollapsed }) {
-
-    const navigate = useNavigate()
-
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
-    
-    const handleToggleSidebar = () => {
-        setIsSidebarCollapsed(prev => !prev);
-    };
+    const [isMeetingOpen, setIsMeetingOpen] = useState(false);
+    const navigate = useNavigate();
 
-    const toggleDropdown = () => {
-        setIsDropdownOpen(prev => !prev);
-    };
+    const handleToggleSidebar = () => setIsSidebarCollapsed(prev => !prev);
+    const toggleDropdown = () => setIsDropdownOpen(prev => !prev);
 
     const handleDropdownItemClick = (action) => {
-        switch(action){
-            case "Profile":
-                navigate("/profile")
-                break
-            case "Manage Teams":
-                navigate("/manage")
-                break
+        switch (action) {
+            case 'Profile':
+                navigate('/profile');
+                break;
+            case 'Manage Teams':
+                navigate('/manage');
+                break;
+            default:
+                break;
         }
         setIsDropdownOpen(false);
-        // Add your action handlers here
     };
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -42,43 +37,38 @@ function Navbar({ setIsSidebarCollapsed, isCollapsed }) {
         };
 
         document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    
     return (
         <div className={`NavbarContainer ${isCollapsed ? 'collapsed' : ''}`}>
             <div className='navbarWrapper'>
                 <div className="sideBarCollapseCont" onClick={handleToggleSidebar} >
-                    <FiSidebar className='sideBarCollapseBtn'/>
+                    <FiSidebar className='sideBarCollapseBtn' />
                 </div>
-                {/* Search Section */}
                 <div className='searchSection'>
                     <FiSearch className='searchIcon' />
-                    <input 
-                        type="text" 
-                        placeholder="Search teams, tasks, messages..." 
+                    <input
+                        type="text"
+                        placeholder="Search teams, tasks, messages..."
                         className='searchInput'
                     />
                 </div>
 
-                {/* Right Section */}
                 <div className='rightSection'>
-                    {/* Quick Actions */}
                     <div className='quickActions'>
                         <button className='actionButton'>
                             <span className='newTaskIcon'>📋</span>
                             New Task
                         </button>
-                        <button className='actionButton meetingButton'>
+                        <button className='actionButton meetingButton' onClick={() => setIsMeetingOpen(true)}>
                             <span className='meetingIcon'>🎥</span>
                             Start Meeting
                         </button>
                     </div>
 
-                    {/* Notifications */}
+                    <MeetingModal isOpen={isMeetingOpen} onClose={() => setIsMeetingOpen(false)} />
+
                     <div className='notificationSection'>
                         <div className='iconButton notificationBadge'>
                             <FiBell />
@@ -86,11 +76,8 @@ function Navbar({ setIsSidebarCollapsed, isCollapsed }) {
                         </div>
                     </div>
 
-                    {/* User Profile */}
                     <div className='userSection' onClick={toggleDropdown} ref={dropdownRef}>
                         <div className='userAvatar'>JD</div>
-                        
-                        {/* Dropdown Menu */}
                         {isDropdownOpen && (
                             <div className='userDropdown'>
                                 <div className='dropdownHeader'>

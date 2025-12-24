@@ -1,0 +1,16 @@
+.verify-page{
+  min-height:80vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px;
+}
+.verify-card{width:420px;background:#fff;border-radius:12px;padding:24px;box-shadow:0 8px 30px rgba(2,6,23,0.08);}
+.verify-card h2{margin:0 0 8px}
+.verify-card p{color:#374151;margin-bottom:16px}
+.verify-label{display:block;font-size:13px;color:#6b7280;margin-bottom:6px}
+.verify-input{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eefc;margin-bottom:12px}
+.verify-actions{display:flex;gap:10px;justify-content:flex-end}
+.btn-primary{background:#2563eb;color:#fff;padding:8px 14px;border-radius:8px;border:none;cursor:pointer}
+.btn-secondary{background:#f3f4f6;color:#111;padding:8px 14px;border-radius:8px;border:none;cursor:pointer}
+.btn-primary:disabled{opacity:0.6;cursor:not-allowed}

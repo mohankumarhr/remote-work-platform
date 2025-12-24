@@ -65,7 +65,7 @@ public class UserService {
         Users full_user_details = userRepo.findByUsername(user.getUsername());
         System.out.println(full_user_details.isEmailVerified());
         LoginResponse response = new LoginResponse();
-        if (authentication.isAuthenticated() && full_user_details.isEmailVerified()) {
+        if (authentication.isAuthenticated()) {
             Map<String, Object> claims = new HashMap<>();
             claims.put("role", "EXTERNAL_SERVICE");
             claims.put("userId", full_user_details.getId());
@@ -85,8 +85,8 @@ public class UserService {
     }
 
 
-    public String ResendVerificationMail(String username){
-        Users user = userRepo.findByUsername(username);
+    public String ResendVerificationMail(String email){
+        Users user = userRepo.findUsersByEmail(email);
 
         if (user == null) {
             return "User with this email does not exist.";
@@ -113,7 +113,7 @@ public class UserService {
         }
 
         // Send the verification email
-        String verificationLink = "http://localhost:8081/verify?token=" + verificationToken.getToken();
+        String verificationLink = "http://localhost:8081/verification/verify?token=" + verificationToken.getToken();
         emailService.sendEmail(user.getEmail(), "Resend Email Verification", "Click the link to verify your email: " + verificationLink);
 
         return "Verification email resent successfully.";
@@ -173,5 +173,9 @@ public class UserService {
         }
 
         return "Account verified successfully";
+    }
+
+    public Users getUserDetails(int id) {
+        return userRepo.findById(id).orElse(null);
     }
 }

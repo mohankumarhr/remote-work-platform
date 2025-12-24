@@ -111,25 +111,31 @@
 }
 
 .projectStatus {
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
 }
 
 .projectStatus.onTrack {
-  background: #dcfce7;
-  color: #16a34a;
-}
-
-.projectStatus.atRisk {
-  background: #fef3c7;
-  color: #d97706;
+    background: #dcfce7;
+    color: #166534;
 }
 
 .projectStatus.ahead {
-  background: #dbeafe;
-  color: #2563eb;
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.projectStatus.atRisk {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.projectStatus.delayed {
+    background: #fee2e2;
+    color: #991b1b;
 }
 
 .projectDue {
@@ -151,6 +157,48 @@
   align-items: center;
   font-size: 12px;
   color: #64748b;
+}
+
+.progressInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.progressText {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.progressBar {
+    width: 100px;
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.progressFill.onTrack {
+    background: #10b981;
+}
+
+.progressFill.ahead {
+    background: #3b82f6;
+}
+
+.progressFill.atRisk {
+    background: #f59e0b;
+}
+
+.progressFill.delayed {
+    background: #ef4444;
 }
 
 .taskCount {

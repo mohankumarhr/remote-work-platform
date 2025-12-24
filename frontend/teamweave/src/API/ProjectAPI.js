@@ -21,7 +21,31 @@ export const fetchProjectByTeam = createAsyncThunk(
             return response.data
         } catch (error) {
             return rejectWithValue(
-                error.response?.data?.message || error.message || 'Failed to fetch members'
+                error.response?.data?.message || error.message || 'Failed to fetch project'
+            )
+        }
+    }
+)
+
+
+export const fetchProjectById = createAsyncThunk(
+    'projects/fetchProjectById',
+    async (projectId, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(taskSericeUrl + '/project/get', {
+                params: {
+                    projectId
+                },
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization : `Bearer ${Cookies.get("jwtToken")}`
+                },
+            })
+
+            return response.data
+        } catch (error) {
+            return rejectWithValue(
+                error.response?.data?.message || error.message || 'Failed to fetch project'
             )
         }
     }
