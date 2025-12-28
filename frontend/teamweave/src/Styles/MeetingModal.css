@@ -1,4 +1,4 @@
-.modal-overlay {
+.meeting-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -10,9 +10,10 @@
   justify-content: center;
   z-index: 1100; /* ensure modal overlays the navbar (navbar z-index:999) */
   backdrop-filter: blur(4px);
+  opacity: 1; /* override global modal styles that default to 0 */
 }
 
-.modal-card {
+.meeting-modal-card {
   width: 820px;
   max-width: 96vw;
   background: #fff;

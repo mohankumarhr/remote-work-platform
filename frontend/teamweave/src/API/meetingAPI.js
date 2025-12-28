@@ -1,16 +1,16 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
-const serviceUrl = 'http://localhost:8084'
+const serviceUrl = "http://localhost:8089"
 
 export const fetchMeetingsByTeam = async (teamId) => {
   try {
     const res = await axios.get(`${serviceUrl}/meeting/by-team`, {
       params: { teamId },
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${Cookies.get('jwtToken')}`
-      }
+      // headers: {
+      //   'Content-Type': 'application/json',
+      //   Authorization: `Bearer ${Cookies.get('jwtToken')}`
+      // }
     })
     return res.data
   } catch (err) {

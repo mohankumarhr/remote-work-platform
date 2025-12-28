@@ -74,8 +74,8 @@ export default function MeetingModal({ isOpen, onClose }) {
   if (!isOpen) return null
 
   const modalContent = (
-    <div className="modal-overlay">
-      <div className="modal-card">
+    <div className="meeting-modal-overlay">
+      <div className="meeting-modal-card">
         <div className="modal-header">
           <h3>Select Members to Call</h3>
           <button className="modal-close" onClick={onClose}>×</button>
@@ -146,5 +146,5 @@ export default function MeetingModal({ isOpen, onClose }) {
     </div>
   )
 
-  return createPortal(modalContent, document.body)
+  return createPortal(modalContent, document?.body || document.createElement('div'))
 }
