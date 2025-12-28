@@ -7,6 +7,7 @@ import com.teamweave.authservice.Repo.UserRepo;
 import com.teamweave.authservice.Repo.VerificationTokenRepo;
 import com.teamweave.authservice.ResponseEntity.LoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -24,6 +25,13 @@ import java.util.UUID;
 
 @Service
 public class UserService {
+
+    @Value("${user.service.url}")
+    private String userServiceUrl;
+
+    @Value("${auth.service.url}")
+    private String authServiceUrl;
+
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -52,7 +60,7 @@ public class UserService {
         userRepo.save(user);
         String token = UUID.randomUUID().toString();
         createVerificationToken(user, token);
-        String url = "http://localhost:8081";
+        String url = authServiceUrl;
 
         String verificationLink = url + "/verification/verify?token=" + token;
         emailService.sendEmail(user.getEmail(), "Email Verification", "Click the link to verify your email: " + verificationLink);
@@ -163,8 +171,8 @@ public class UserService {
             System.out.println(userProfileDto);
 
             HttpEntity<UserProfileDto> entity = new HttpEntity<>(userProfileDto, headers);
-
-            String response = restTemplate.postForObject("http://localhost:8082/userprofile/create", entity, String.class);
+            String userProfileUrl = userServiceUrl + "/userprofile/create";
+            String response = restTemplate.postForObject(userProfileUrl, entity, String.class);
             System.out.println("Response from user-service: " + response);
 
         } catch (Exception e) {
