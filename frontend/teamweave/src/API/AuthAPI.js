@@ -2,9 +2,11 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
 
-const base_url = "http://localhost:8081/auth"
-const base_url_verify = "http://localhost:8081/verification"
+// const base_url = "http://localhost:8081/auth"
+// const base_url_verify = "http://localhost:8081/verification"
 
+const base_url = "https://auth-service-zq2s.onrender.com/auth"
+const base_url_verify = "https://auth-service-zq2s.onrender.com/verification"
 
 export const handleLogin = async (LoginDetails) => {
     console.log("logindetails", LoginDetails)
