@@ -2,7 +2,9 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
-const taskSericeUrl = "http://localhost:8084"
+// const taskSericeUrl = "http://localhost:8084"
+
+const taskSericeUrl = "https://task-service-ewiw.onrender.com"
 
 export const fetchProjectByTeam = createAsyncThunk(
     'projects/fetchProjectByTeam',

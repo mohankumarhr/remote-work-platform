@@ -5,8 +5,9 @@ import Cookies from 'js-cookie'
 // Async thunk to fetch all tasks
 
 
-const taskServiceUrl = "http://localhost:8084"
+// const taskServiceUrl = "http://localhost:8084"
 
+const taskServiceUrl = "https://task-service-ewiw.onrender.com"
 
 export const fetchAllTasks = createAsyncThunk(
     'tasks/fetchAllTasks',

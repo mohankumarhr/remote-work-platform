@@ -49,7 +49,12 @@ public class ProjectController {
     }
 
     @GetMapping("/by-team")
-    private ResponseEntity<List<ProjectDTO>> getProjectsByTeamId(@RequestParam int teamId) {
+    private ResponseEntity<?> getProjectsByTeamId(@RequestParam(required = false) Integer teamId) {
+        if (teamId == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("teamId is required");
+        }
         return projectService.getProjectsByTeamId(teamId);
     }
 
