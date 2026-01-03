@@ -165,7 +165,7 @@ public class TaskService {
 
 
     public String getTeamName(int teamId) {
-        String url = teamServiceUrl + "team/getbyid?teamId=" + teamId;
+        String url = teamServiceUrl + "/team/getbyid?teamId=" + teamId;
         System.out.println(url);
 
         Map<String, Object> claims = new HashMap<>();
