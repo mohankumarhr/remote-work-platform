@@ -4,7 +4,7 @@ export const statsData = [
     {
         label: "Active Teams",
         number: "8",
-        subtext: "+2 this month",
+        subtext: "this month",
         description: "Teams you're part of",
         iconType: "team",
         iconColor: "#8b5cf6"
@@ -12,7 +12,7 @@ export const statsData = [
     {
         label: "Tasks Completed",
         number: "24",
-        subtext: "+12% from last week",
+        subtext: "from last week",
         description: "This week",
         iconType: "task",
         iconColor: "#10b981"
@@ -20,7 +20,7 @@ export const statsData = [
     {
         label: "Messages",
         number: "156",
-        subtext: "32 unread",
+        subtext: "unread messages",
         description: "Across all channels",
         iconType: "message",
         iconColor: "#f59e0b"
@@ -28,7 +28,7 @@ export const statsData = [
     {
         label: "Meeting Hours",
         number: "12.5h",
-        subtext: "-2h from last week",
+        subtext: "from last week",
         description: "This week",
         iconType: "clock",
         iconColor: "#3b82f6"
@@ -50,65 +50,65 @@ export const projectsData = [
 ];
 
 export const activitiesData = [
-    {
-        id: 1,
-        avatar: "SC",
-        userName: "Sarah Chen",
-        action: "completed task",
-        target: "Homepage Redesign",
-        time: "5 minutes ago"
-    },
-    {
-        id: 2,
-        avatar: "MJ",
-        userName: "Mike Johnson",
-        action: "sent a message in",
-        target: "#design-team",
-        time: "12 minutes ago"
-    },
-    {
-        id: 3,
-        avatar: "AR",
-        userName: "Alex Rodriguez",
-        action: "scheduled a meeting",
-        target: "Product Review",
-        time: "1 hour ago"
-    },
-    {
-        id: 4,
-        avatar: "EW",
-        userName: "Emma Wilson",
-        action: "joined the team",
-        target: "Marketing Team",
-        time: "2 hours ago"
-    }
+    // {
+    //     id: 1,
+    //     avatar: "SC",
+    //     userName: "Sarah Chen",
+    //     action: "completed task",
+    //     target: "Homepage Redesign",
+    //     time: "5 minutes ago"
+    // },
+    // {
+    //     id: 2,
+    //     avatar: "MJ",
+    //     userName: "Mike Johnson",
+    //     action: "sent a message in",
+    //     target: "#design-team",
+    //     time: "12 minutes ago"
+    // },
+    // {
+    //     id: 3,
+    //     avatar: "AR",
+    //     userName: "Alex Rodriguez",
+    //     action: "scheduled a meeting",
+    //     target: "Product Review",
+    //     time: "1 hour ago"
+    // },
+    // {
+    //     id: 4,
+    //     avatar: "EW",
+    //     userName: "Emma Wilson",
+    //     action: "joined the team",
+    //     target: "Marketing Team",
+    //     time: "2 hours ago"
+    // }
 ];
 
 export const meetingsData = [
-    {
-        id: 1,
-        title: "Team Standup",
-        participants: "Design Team • 15 minutes",
-        time: "2025-08-03 14:50:22.676612",
-    },
-    {
-        id: 2,
-        title: "Product Review",
-        participants: "Marketing Team • 1 hour",
-        time: "2025-07-27 16:14:22.676612",
-    },
-    {
-        id: 3,
-        title: "Sprint Planning",
-        participants: "Dev Team • 2 hours",
-        time: "2025-07-27 16:14:22.676612",
-    },
-    {
-        id: 3,
-        title: "Sprint Planning",
-        participants: "Dev Team • 2 hours",
-        time: "2025-07-27 16:14:22.676612",
-    }
+    // {
+    //     id: 1,
+    //     title: "Team Standup",
+    //     participants: "Design Team • 15 minutes",
+    //     time: "2025-08-03 14:50:22.676612",
+    // },
+    // {
+    //     id: 2,
+    //     title: "Product Review",
+    //     participants: "Marketing Team • 1 hour",
+    //     time: "2025-07-27 16:14:22.676612",
+    // },
+    // {
+    //     id: 3,
+    //     title: "Sprint Planning",
+    //     participants: "Dev Team • 2 hours",
+    //     time: "2025-07-27 16:14:22.676612",
+    // },
+    // {
+    //     id: 3,
+    //     title: "Sprint Planning",
+    //     participants: "Dev Team • 2 hours",
+    //     time: "2025-07-27 16:14:22.676612",
+    // }
 ];
 
 export const quickActionsData = [

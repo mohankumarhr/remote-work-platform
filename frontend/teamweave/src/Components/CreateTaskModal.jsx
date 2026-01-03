@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import ReactDOM from 'react-dom'
 import { FiPlus } from 'react-icons/fi'
 import {membersData, projectsDetailedData } from '../data'
 import '../Styles/CreateTaskModal.css'
@@ -179,7 +180,7 @@ function CreateTaskModal({ isOpen, onClose, onSubmit, editData = null }) {
 
     if (!isOpen) return null
 
-    return (
+    return ReactDOM.createPortal(
         <div className='modalOverlay' onClick={handleClose}>
             <div className='createTaskModal' onClick={(e) => e.stopPropagation()}>
                 <div className='modalHeader'>
@@ -312,7 +313,8 @@ function CreateTaskModal({ isOpen, onClose, onSubmit, editData = null }) {
                     </div>
                 </form>
             </div>
-        </div>
+        </div>,
+        document.body
     )
 }
 

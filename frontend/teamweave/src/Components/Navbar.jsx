@@ -5,12 +5,19 @@ import "../Styles/Navbar.css"
 import BackgroundLetterAvatars from './Avatar';
 import { useNavigate } from 'react-router-dom';
 import MeetingModal from './MeetingModal';
+import { useSelector } from 'react-redux';
+import { getInitials } from '../data';
+import CreateTaskModal from './CreateTaskModal';
 
 function Navbar({ setIsSidebarCollapsed, isCollapsed }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
     const [isMeetingOpen, setIsMeetingOpen] = useState(false);
     const navigate = useNavigate();
+
+    const [showCreateTask, setShowCreateTask] = useState(false)
+
+    const user = useSelector((state) => state.getUserDetails.value)
 
     const handleToggleSidebar = () => setIsSidebarCollapsed(prev => !prev);
     const toggleDropdown = () => setIsDropdownOpen(prev => !prev);
@@ -40,6 +47,11 @@ function Navbar({ setIsSidebarCollapsed, isCollapsed }) {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
+    const closeCreateTask = () => {
+        setShowCreateTask(false)
+    }
+
+
     return (
         <div className={`NavbarContainer ${isCollapsed ? 'collapsed' : ''}`}>
             <div className='navbarWrapper'>
@@ -57,7 +69,7 @@ function Navbar({ setIsSidebarCollapsed, isCollapsed }) {
 
                 <div className='rightSection'>
                     <div className='quickActions'>
-                        <button className='actionButton'>
+                        <button className='actionButton' onClick={()=>{setShowCreateTask(true)}}>
                             <span className='newTaskIcon'>📋</span>
                             New Task
                         </button>
@@ -70,21 +82,21 @@ function Navbar({ setIsSidebarCollapsed, isCollapsed }) {
                     <MeetingModal isOpen={isMeetingOpen} onClose={() => setIsMeetingOpen(false)} />
 
                     <div className='notificationSection'>
-                        <div className='iconButton notificationBadge'>
+                        <div className='iconButton notificationBadge btndisabled'>
                             <FiBell />
-                            <span className='badge'>3</span>
+                            <span className='badge'>x</span>
                         </div>
                     </div>
 
                     <div className='userSection' onClick={toggleDropdown} ref={dropdownRef}>
-                        <div className='userAvatar'>JD</div>
+                        <div className='userAvatar'>{getInitials(user.fullName)}</div>
                         {isDropdownOpen && (
                             <div className='userDropdown'>
                                 <div className='dropdownHeader'>
-                                    <div className='dropdownAvatar'>JD</div>
+                                    <div className='dropdownAvatar'>{getInitials(user.fullName)}</div>
                                     <div className='dropdownUserInfo'>
-                                        <span className='dropdownUserName'>John Doe</span>
-                                        <span className='dropdownUserRole'>Admin</span>
+                                        <span className='dropdownUserName'>{user.fullName}</span>
+                                        <span className='dropdownUserRole'>{user.designation}</span>
                                     </div>
                                 </div>
                                 <div className='dropdownItems'>
@@ -92,15 +104,15 @@ function Navbar({ setIsSidebarCollapsed, isCollapsed }) {
                                         <FiUser className='dropdownIcon' />
                                         <span>Profile</span>
                                     </div>
-                                    <div className='dropdownItem' onClick={() => handleDropdownItemClick('Settings')}>
-                                        <FiSettings className='dropdownIcon' />
-                                        <span>Settings</span>
-                                    </div>
                                     <div className='dropdownItem' onClick={() => handleDropdownItemClick('Manage Teams')}>
                                         <FiUsers className='dropdownIcon' />
                                         <span>Manage Teams</span>
                                     </div>
-                                    <div className='dropdownItem' onClick={() => handleDropdownItemClick('Set Status')}>
+                                    <div className='dropdownItem btndisabled' onClick={() => handleDropdownItemClick('Settings')}>
+                                        <FiSettings className='dropdownIcon' />
+                                        <span>Settings</span>
+                                    </div>
+                                    <div className='dropdownItem btndisabled' onClick={() => handleDropdownItemClick('Set Status')}>
                                         <FiActivity className='dropdownIcon' />
                                         <span>Set Status</span>
                                     </div>
@@ -115,6 +127,11 @@ function Navbar({ setIsSidebarCollapsed, isCollapsed }) {
                     </div>
                 </div>
             </div>
+             {/* Create Task Modal */}
+            <CreateTaskModal
+                isOpen={showCreateTask}
+                onClose={closeCreateTask}
+            />
         </div>
     )
 }

@@ -113,6 +113,7 @@ function Teams() {
     }
 
     const handleMemberClick = (member) => {
+        console.log(member)
         setSelectedMember(member)
         setShowMemberDetails(true)
     }
@@ -366,7 +367,7 @@ function Teams() {
                                 </div>
                                 <div className='contactItem'>
                                     <FiPhone className='contactIcon' />
-                                    <span>{selectedMember.phone}</span>
+                                    <span>{selectedMember.phoneNumber}</span>
                                 </div>
                             </div>
                         </div>

@@ -10,11 +10,13 @@ public class UserDTO {
     private String department;
     private String status; // online, offline, away
     private String profilePictureUrl;
+    private long phoneNumber;
+
 
     public UserDTO() {
     }
 
-    public UserDTO(int id, String userName, String fullName, String email, String role, String designation, String department, String status, String profilePictureUrl) {
+    public UserDTO(int id, String userName, String fullName, String email, String role, String designation, String department, String status, String profilePictureUrl, long phoneNumber) {
         this.id = id;
         this.userName = userName;
         this.fullName = fullName;
@@ -24,6 +26,7 @@ public class UserDTO {
         this.department = department;
         this.status = status;
         this.profilePictureUrl = profilePictureUrl;
+        this.phoneNumber = phoneNumber;
     }
 
     public int getId() {
@@ -79,6 +82,12 @@ public class UserDTO {
     }
     public void setProfilePictureUrl(String profilePictureUrl) {
         this.profilePictureUrl = profilePictureUrl;
+    }
+    public long getPhoneNumber() {
+        return phoneNumber;
+    }
+    public void setPhoneNumber(long phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
 }

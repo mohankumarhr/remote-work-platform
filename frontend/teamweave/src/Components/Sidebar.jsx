@@ -108,11 +108,11 @@ function Sidebar({ isCollapsed }) {
                             <FiMessageSquare />
                             <span>Messages</span>
                         </div>
-                        <div className={`sidebarMenuItem ${location.pathname === '/meetings' ? 'active' : ''}`} onClick={() => handleNavigation('/meetings')}>
+                        <div className="sidebarMenuItem btndisabled">
                             <CiVideoOn />
                             <span>Meetings</span>
                         </div>
-                        <div className="sidebarMenuItem">
+                        <div className="sidebarMenuItem btndisabled">
                             <CiCalendar />
                             <span>Calendar</span>
                         </div>
@@ -132,11 +132,11 @@ function Sidebar({ isCollapsed }) {
                 {/* Tools Section */}
                 <div className="toolsSection">
                     <div className='toolsTitle'>TOOLS</div>
-                    <div className="sidebarMenuItem">
+                    <div className="sidebarMenuItem btndisabled">
                         <SiSimpleanalytics />
                         <span>Analytics</span>
                     </div>
-                    <div className="sidebarMenuItem">
+                    <div className="sidebarMenuItem btndisabled">
                         <CiSettings />
                         <span>Settings</span>
                     </div>

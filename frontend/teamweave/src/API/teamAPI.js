@@ -3,7 +3,9 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 
 
-const teamSericeUrl = "http://localhost:8083"
+// const teamSericeUrl = "http://localhost:8083"
+
+const teamSericeUrl = "https://team-service-ec7y.onrender.com"
 
 export const fetchTeamsByUser = createAsyncThunk(
     'teams/fetchTeamsByUser',

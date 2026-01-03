@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import ReactDOM from 'react-dom'
 import '../Styles/CreateProjectModal.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchTeamsByUser } from '../API/teamAPI'
@@ -140,7 +141,7 @@ function CreateProjectModal({ isOpen, onClose, onSubmit, isLoading = false, edit
 
     if (!isOpen) return null
 
-    return (
+    return ReactDOM.createPortal(
         <div className="modalOverlay" onClick={handleClose}>
             <div className="createProjectModal" onClick={e => e.stopPropagation()}>
                 <div className="modalHeader">
@@ -245,7 +246,8 @@ function CreateProjectModal({ isOpen, onClose, onSubmit, isLoading = false, edit
                     </div>
                 </form>
             </div>
-        </div>
+        </div>,
+        document.body
     )
 }
 

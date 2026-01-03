@@ -13,6 +13,7 @@ import { fetchTeamsByUser } from '../API/teamAPI'
 import { fetchAssignedTasks } from '../API/taskAPI'
 import { fetchProjectById } from '../API/ProjectAPI'
 import { useNavigate } from 'react-router-dom'
+import { fetchUserDetails } from '../API/UserAPI'
 
 function Dashboard() {
 
@@ -27,6 +28,7 @@ function Dashboard() {
 
     const teamsData = useSelector((state) => state.getMemberedTeam.value)
     const tasks = useSelector((state) => state.getAssignedTask.value)
+    const user = useSelector((state) => state.getUserDetails.value)
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -40,6 +42,7 @@ function Dashboard() {
     useEffect(() => {
         dispatch(fetchTeamsByUser())
         dispatch(fetchAssignedTasks())
+        dispatch(fetchUserDetails())
         // console.log(apiTask)
     }, [dispatch])
 
@@ -222,7 +225,7 @@ function Dashboard() {
             <div className={`mainContentArea ${isCollapsed ? 'collapsed' : ''}`}>
                 <div className='dashboardContent'>
                     <h1 className='welcomeTitle'>
-                        Good morning, John! 👋
+                        Good morning, {user?.userName || 'User'}! 👋
                     </h1>
                     <p className='welcomeSubtitle'>
                         Here's what's happening with your teams today.
@@ -249,7 +252,7 @@ function Dashboard() {
                         <div className='contentCard'>
                             <h3 className='contentCardTitle'>Project Progress</h3>
                             <div className='projectsList'>
-                                {fetchedProjects.map((project) => (
+                                {fetchedProjects/length?fetchedProjects.map((project) => (
                                     <div key={project.id} className='projectItem'>
                                         <div className='projectInfo'>
                                             <h4 className='projectName'>{project.name}</h4>
@@ -276,7 +279,7 @@ function Dashboard() {
                                             </div>
                                         </div>
                                     </div>
-                                ))}
+                                )):<div className='projectItem'>No projects found.</div>}
                             </div>
                             <a href="/teams" className='viewAllLink'>View all projects →</a>
                         </div>
@@ -285,7 +288,7 @@ function Dashboard() {
                         <div className='contentCard'>
                             <h3 className='contentCardTitle'>Recent Activity</h3>
                             <div className='activityList'>
-                                {activitiesData.slice(0, 4).map((activity) => (
+                                {activitiesData.length?activitiesData.slice(0, 4).map((activity) => (
                                     <div key={activity.id} className='activityItem'>
                                         <div className='activityAvatar'>{activity.avatar}</div>
                                         <div className='activityContent'>
@@ -295,7 +298,7 @@ function Dashboard() {
                                             <span className='activityTime'>{activity.time}</span>
                                         </div>
                                     </div>
-                                ))}
+                                )): <div className='activityItem'>No Recent Activity</div>}
                             </div>
                             <a href="#" className='viewAllLink'>View all activity →</a>
                         </div>
@@ -304,7 +307,7 @@ function Dashboard() {
                         <div className='contentCard'>
                             <h3 className='contentCardTitle'>🎥 Upcoming Meetings</h3>
                             <div className='meetingsList'>
-                                {processedMeeting.map((meeting) => (
+                                {processedMeeting.length?processedMeeting.map((meeting) => (
                                     <div key={meeting.id} className='meetingItem'>
                                         <div className='meetingDetails'>
                                             <h4 className='meetingTitle'>
@@ -321,7 +324,7 @@ function Dashboard() {
                                             </button>
                                         </div>
                                     </div>
-                                ))}
+                                )):<div className='meetingItem'>No Upcoming Meetings</div>}
                             </div>
                         </div>
 
