@@ -2,7 +2,9 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
-const chatSericeUrl = "http://localhost:8085"
+// const chatSericeUrl = "http://localhost:8085"
+
+const chatSericeUrl = "https://chat-service-mnpe.onrender.com"
 
 export const fetchTeamChat = createAsyncThunk(
     'chat/fetchTeamChat',
