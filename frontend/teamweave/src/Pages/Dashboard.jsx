@@ -252,7 +252,7 @@ function Dashboard() {
                         <div className='contentCard'>
                             <h3 className='contentCardTitle'>Project Progress</h3>
                             <div className='projectsList'>
-                                {fetchedProjects/length?fetchedProjects.map((project) => (
+                                {fetchedProjects.length != 0?fetchedProjects.map((project) => (
                                     <div key={project.id} className='projectItem'>
                                         <div className='projectInfo'>
                                             <h4 className='projectName'>{project.name}</h4>
