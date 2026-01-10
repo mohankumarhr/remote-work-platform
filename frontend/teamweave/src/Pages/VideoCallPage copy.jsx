@@ -2,6 +2,7 @@ import React from 'react'
 import VideoCall from '../Components/VideoCall'
 import Cookies from "js-cookie";
 import { useLocation } from 'react-router-dom'
+import { callServiceUrl } from '../data';
 
 function VideoCallPage() {
 
@@ -29,7 +30,7 @@ function VideoCallPage() {
     <div>
       <VideoCall 
         userId={getCurrentUserId()}
-        signalingServerUrl={`ws://localhost:8089/ws/video?userId=${getCurrentUserId()}`}
+        signalingServerUrl={`${callServiceUrl}/ws/video?userId=${getCurrentUserId()}`}
       />
     </div>
   )

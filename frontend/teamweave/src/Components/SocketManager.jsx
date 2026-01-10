@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setConnected, setSocket, setIncomingOffer, clearIncomingOffer } from '../Redux/VideoCall/signalingSlice';
-import { getCurrentUserId } from '../data';
+import { getCurrentUserId, callServiceUrl } from '../data';
 
 // This component wraps your app and manages the global socket
 const SocketManager = ({ children }) => {
@@ -17,7 +17,7 @@ const SocketManager = ({ children }) => {
   useEffect(() => {
     // Connect to the WebSocke
 
-    socketRef.current = new WebSocket(`ws://localhost:8089/ws/video?userId=${getCurrentUserId()}`);
+    socketRef.current = new WebSocket(`${callServiceUrl}/ws/video?userId=${getCurrentUserId()}`);
     socketRef.current.onopen = () => {
       console.log("✅ SocketManager: Connected");
       dispatch(setConnected(true));

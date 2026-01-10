@@ -1,5 +1,9 @@
 import Cookies from "js-cookie";
 
+// export const callServiceUrl = "ws://localhost:8089";
+
+export const callServiceUrl = "wss://call-service-dpcq.onrender.com";
+
 export const statsData = [
     {
         label: "Active Teams",

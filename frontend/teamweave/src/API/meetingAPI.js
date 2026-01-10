@@ -1,7 +1,9 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
-const serviceUrl = "http://localhost:8089"
+// const serviceUrl = "http://localhost:8089"
+
+const serviceUrl = "https://call-service-dpcq.onrender.com"
 
 export const fetchMeetingsByTeam = async (teamId) => {
   try {
