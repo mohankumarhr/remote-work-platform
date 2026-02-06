@@ -327,4 +327,59 @@
   }
 }
 
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  /* Overlay that appears behind sidebar on mobile */
+  .sidebarOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .sideBarContainer {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 280px;
+    height: 100vh;
+    z-index: 1000;
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Collapsed state on mobile - slide out */
+  .sideBarContainer.collapsed {
+    transform: translateX(-100%);
+    width: 280px;
+    overflow: visible;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Show all content in mobile view */
+  .sideBarContainer.collapsed .logoText,
+  .sideBarContainer.collapsed .sectionTitle,
+  .sideBarContainer.collapsed .sidebarMenuItem span,
+  .sideBarContainer.collapsed .ProjectCreationButton span,
+  .sideBarContainer.collapsed .toolsTitle,
+  .sideBarContainer.collapsed .userInfo {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+
 

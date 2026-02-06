@@ -425,3 +425,212 @@
   font-size: 18px;
   margin-top: 48px;
 }
+/* Back to list button for mobile */
+.back-to-list-btn {
+  background: #f3f4f6;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2563eb;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background 0.2s;
+  margin-right: 12px;
+}
+
+.back-to-list-btn:hover {
+  background: #e5e7eb;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .chatroom-unified-layout {
+    height: calc(100vh - 90px); /*  Account for navbar height on mobile */
+    position: relative;
+  }
+
+  /* Mobile toggle behavior */
+  .chatroom-unified-list.mobile-hidden {
+    display: none;
+  }
+
+  .chatroom-unified-chat.mobile-hidden {
+    display: none;
+  }
+
+  /* Full width on mobile */
+  .chatroom-unified-list {
+    width: 100%;
+    border-radius: 0;
+  }
+
+  .chatroom-unified-chat {
+    width: 100%;
+  }
+
+  /* Adjust header for mobile */
+  .chatroom-header {
+    padding: 12px;
+    border-radius: 0;
+    flex-wrap: wrap;
+  }
+
+  .chatroom-header-info {
+    /* flex: 1; */
+    min-width: 0;
+    gap: 10px;
+  }
+
+  .chatroom-header-avatar-circle {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .chatroom-header-name {
+    font-size: 1rem;
+  }
+
+  .chat-status-bar {
+    /* width: 100%; */
+    justify-content: flex-start;
+    padding-top: 4px;
+    margin-bottom: 0;
+  }
+
+  /* List sections */
+  .chatroom-list-section {
+    padding: 0 12px;
+    margin-bottom: 12px;
+  }
+
+  .chatroom-list-section h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .chatroom-list-section button {
+    padding: 12px 14px;
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  /* Messages area */
+  .chatroom-messages {
+    padding: 16px 12px;
+  }
+
+  .chatroom-message {
+    margin-right: 20px;
+  }
+
+  .chatroom-message-self {
+    margin-left: 20px;
+  }
+
+  .chatroom-message-content {
+    font-size: 14px;
+  }
+
+  /* Input bar */
+  .chatroom-input-bar {
+    padding: 12px;
+  }
+
+  .chatroom-input {
+    padding: 10px 12px;
+    font-size: 14px;
+    margin-right: 8px;
+  }
+
+  .chatroom-send-btn {
+    padding: 0 16px;
+    font-size: 14px;
+  }
+
+  /* Vertical layout adjustments */
+  .chatroom-vertical-layout {
+    height: auto;
+    margin-top: 12px;
+  }
+
+  .chatroom-member-list {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 12px 0;
+  }
+
+  .chatroom-member-list h4 {
+    font-size: 14px;
+    margin: 0 0 8px 16px;
+  }
+
+  .chatroom-member-list button {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .chatroom-app-ui {
+    /* min-height: auto; */
+    border-radius: 0;
+  }
+
+  /* Empty state */
+  .chatroom-empty,
+  .empty {
+    font-size: 14px;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chatroom-header {
+    padding: 10px;
+  }
+
+  .back-to-list-btn {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .chatroom-header-avatar-circle {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+
+  .chatroom-header-name {
+    font-size: 0.95rem;
+  }
+
+  .chatroom-messages {
+    padding: 12px 8px;
+  }
+
+  .chatroom-message {
+    margin-right: 10px;
+  }
+
+  .chatroom-message-self {
+    margin-left: 10px;
+  }
+
+  .chatroom-input-bar {
+    padding: 8px;
+  }
+
+  .chatroom-input {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  .chatroom-send-btn {
+    padding: 0 12px;
+    font-size: 13px;
+  }
+}

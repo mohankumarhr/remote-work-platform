@@ -24,6 +24,7 @@
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 15px;
   width: 100%;
+  height: -webkit-fill-available;
   /* max-width: 1000px; */
 }
 
@@ -37,7 +38,7 @@
 
 .video-element {
   width: 100%;
-  height: 95vh;
+  height: -webkit-fill-available;
   object-fit: cover;
   background: #000;
   transition: opacity 0.3s ease;
@@ -45,6 +46,52 @@
 
 .video-off {
   opacity: 0.3;
+}
+
+/* ===== Camera Off Fallback ===== */
+.camera-off-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #d3d3d3;
+}
+
+.camera-off-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  font-weight: bold;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== Camera Off Fallback ===== */
+.camera-off-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #d3d3d3;
+}
+
+.camera-off-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  font-weight: bold;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .video-label {

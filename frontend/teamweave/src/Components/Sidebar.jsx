@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Cookies from 'js-cookie'
@@ -16,17 +16,34 @@ import CreateProjectModal from './CreateProjectModal';
 import { createProject } from '../API/ProjectAPI';
 import '../Styles/Sidebar.css';
 
-function Sidebar({ isCollapsed }) {
+function Sidebar({ isCollapsed, setIsSidebarCollapsed }) {
     const navigate = useNavigate()
     const location = useLocation()
     const dispatch = useDispatch()
     const [isCreateProjectModalOpen, setIsCreateProjectModalOpen] = useState(false)
+    const [isMobile, setIsMobile] = useState(false)
     
     // Get loading state from Redux store
     const isLoading = useSelector((state) => state.getProject.loading)
 
+    // Detect mobile screen size
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 768)
+        }
+        
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
+
     const handleNavigation = (path) => {
         navigate(path)
+        // Auto-close sidebar on mobile after navigation
+        if (isMobile && setIsSidebarCollapsed) {
+            setIsSidebarCollapsed(true)
+        }
     }
 
     const handleCreateProject = async (projectData) => {
@@ -68,7 +85,16 @@ function Sidebar({ isCollapsed }) {
     }
 
     return (
-        <div className={`sideBarContainer ${isCollapsed ? 'collapsed' : ''}`}>
+        <>
+            {/* Overlay for mobile - click to close sidebar */}
+            {isMobile && !isCollapsed && (
+                <div 
+                    className="sidebarOverlay" 
+                    onClick={() => setIsSidebarCollapsed && setIsSidebarCollapsed(true)}
+                />
+            )}
+            
+            <div className={`sideBarContainer ${isCollapsed ? 'collapsed' : ''}`}>
             <div className='sidebarWrapper'>
                 {/* Logo Section */}
                 <div className='logoContainer'>
@@ -121,12 +147,20 @@ function Sidebar({ isCollapsed }) {
 
                 {/* New Project Button */}
                 <button
-                    className={`ProjectCreationButton ${isLoading ? 'loading' : ''}`}
-                    onClick={() => setIsCreateProjectModalOpen(true)}
-                    disabled={isLoading}
+                    // className={`ProjectCreationButton ${isLoading ? 'loading' : ''}`}
+                    className={`ProjectCreationButton`}
+                    onClick={() => {
+                        setIsCreateProjectModalOpen(true)
+                        // Auto-close sidebar on mobile
+                        if (isMobile && setIsSidebarCollapsed) {
+                            setIsSidebarCollapsed(true)
+                        }
+                    }}
+                    // disabled={isLoading}
                 >
                     <CiCirclePlus />
-                    <span>{isLoading ? 'Creating...' : 'New Project'}</span>
+                    {/* <span>{isLoading ? 'Creating...' : 'New Project'}</span> */}
+                    <span>New Project</span>
                 </button>
 
                 {/* Tools Section */}
@@ -151,6 +185,7 @@ function Sidebar({ isCollapsed }) {
                 isLoading={isLoading}
             />
         </div>
+        </>
     )
 }
 

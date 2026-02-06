@@ -589,9 +589,9 @@
         display: none;
     }
 
-    .createNewButton span {
+    /* .createNewButton span {
         display: none;
-    }
+    } */
 
     .searchInputWrapper {
         max-width: none;

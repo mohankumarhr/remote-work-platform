@@ -25,7 +25,10 @@ function Teams() {
     const isLoading = useSelector((state) => state.getMemberedTeam.loading)
     const error = useSelector((state) => state.getMemberedTeam.error)
 
-    const [isCollapsed, setIsSidebarCollapsed] = useState(false)
+    const [isCollapsed, setIsSidebarCollapsed] = useState(() => {
+        // Initialize as collapsed on mobile
+        return window.innerWidth <= 768
+    })
     const [selectedTeam, setSelectedTeam] = useState(teamsData[0]?.id || null)
     const [showCreateTeam, setShowCreateTeam] = useState(false)
     const [expandedProject, setExpandedProject] = useState(null)
@@ -131,7 +134,7 @@ function Teams() {
 
     return (
         <div className='dashboardLayout'>
-            <Sidebar isCollapsed={isCollapsed} />
+            <Sidebar isCollapsed={isCollapsed} setIsSidebarCollapsed={setIsSidebarCollapsed} />
             <Navbar setIsSidebarCollapsed={setIsSidebarCollapsed} isCollapsed={isCollapsed} />
             
             <div className={`mainContentArea ${isCollapsed ? 'collapsed' : ''}`}>
@@ -148,7 +151,8 @@ function Teams() {
                             disabled={isLoading}
                         >
                             <FiPlus />
-                            <span>{isLoading ? 'Creating...' : 'Create Team'}</span>
+                            {/* <span>{isLoading ? 'Creating...' : 'Create Team'}</span> */}
+                            <span>Create Team</span>
                         </button>
                     </div>
 

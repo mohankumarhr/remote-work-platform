@@ -41,14 +41,46 @@ const TeamChatPage = () => {
   const membersByTeam = useSelector((state) => state.getTeamMembers.value);
   const [selectedChat, setSelectedChat] = useState({ type: null, id: null, name: null });
   const [allMembers, setAllMembers] = useState([]);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
+    // Initialize as collapsed on mobile
+    return window.innerWidth <= 768
+  });
+  const [showChatList, setShowChatList] = useState(true); // Mobile: show list or chat
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [typingIndicator, setTypingIndicator] = useState({
     isTyping : false,
     sender : null
   })
 
+  const [loadingTeam, setTeamLoading] = useState(false)
+  const [loadingMember, setMemberLoading] = useState(false)
+
+  // Detect mobile/desktop changes
   useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      if (!mobile) setShowChatList(true); // Always show list on desktop
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Handle chat selection on mobile
+  const handleChatSelect = (type, id, name) => {
+    setSelectedChat({ type, id, name });
+    if (isMobile) setShowChatList(false); // Hide list, show chat on mobile
+  };
+
+  // Handle back to list on mobile
+  const handleBackToList = () => {
+    if (isMobile) setShowChatList(true);
+  };
+
+  useEffect(() => {
+    setTeamLoading(true)
     dispatch(fetchTeamsByUser());
+    setTeamLoading(false)
   }, [dispatch]);
 
   useEffect(() => {
@@ -61,6 +93,7 @@ const TeamChatPage = () => {
 
   useEffect(() => {
     // Fetch members for all teams user is part of
+    setMemberLoading(true)
     if (teams.length > 0) {
       Promise.all(teams.map(team => dispatch(fetchTeamMember(team.id)))).then((results) => {
         // Flatten all members, remove duplicates by id
@@ -74,6 +107,7 @@ const TeamChatPage = () => {
         setAllMembers(Object.values(memberMap));
       });
     }
+    setMemberLoading(false)
   }, [teams, dispatch]);
 
 
@@ -99,35 +133,33 @@ const TeamChatPage = () => {
   return (
     <div className='dashboardLayout'>
       <Navbar setIsSidebarCollapsed={setIsSidebarCollapsed} isCollapsed={isSidebarCollapsed} />
-      <Sidebar isCollapsed={isSidebarCollapsed} />
+      <Sidebar isCollapsed={isSidebarCollapsed} setIsSidebarCollapsed={setIsSidebarCollapsed} />
       <div className={`mainContentArea ${isSidebarCollapsed ? 'collapsed' : ''}`}>
         <div style={{ flex: 1, minWidth: 0, display: 'flex' }}>
           <div className="chatroom-unified-layout" style={{ width: '100%' }}>
-            <aside className="chatroom-unified-list">
+            <aside className={`chatroom-unified-list ${isMobile && !showChatList ? 'mobile-hidden' : ''}`}>
               <div className="chatroom-list-section">
                 <h3>Teams</h3>
-                {teams.map((team) => (
+                {!loadingTeam?teams.map((team) => (
                   <button
                     key={team.id}
                     className={selectedChat.type === 'team' && selectedChat.id === team.id ? 'selected' : ''}
-                    onClick={() => setSelectedChat({ type: 'team', id: team.id, name: team.name })}
+                    onClick={() => handleChatSelect('team', team.id, team.name)}
                   >
                     {team.name}
                   </button>
-                ))}
+                )):<span>Loading teams...</span>}
               </div>
               <div className="chatroom-list-section">
                 <h3>Members</h3>
-                {allMembers.length === 0 ? (
-                  <span className="empty">No members found</span>
-                ) : (
+                {!loadingMember?
                   allMembers.map((m) => {
                     if (m.id === getCurrentUserId()) {
                       return (
                         <button
                           key={m.id}
                           className={selectedChat.type === 'member' && selectedChat.id === m.id ? 'selected' : ''}
-                          onClick={() => setSelectedChat({ type: 'member', id: m.id, name: m.fullName || m.name })}
+                          onClick={() => handleChatSelect('member', m.id, m.fullName || m.name)}
                         >
                           {m.fullName || m.name} (You)
                         </button>
@@ -137,21 +169,28 @@ const TeamChatPage = () => {
                         <button
                           key={m.id}
                           className={selectedChat.type === 'member' && selectedChat.id === m.id ? 'selected' : ''}
-                          onClick={() => setSelectedChat({ type: 'member', id: m.id, name: m.fullName || m.name })}
+                          onClick={() => handleChatSelect('member', m.id, m.fullName || m.name)}
                         >
                           {m.fullName || m.name}
                         </button>
                       );
                     }
                     return null; // If the user ID matches, return null (nothing to render)
-                  })
-                )}
+                  }
+                ):<span>Loading members...</span>}
+                {!loadingMember&&allMembers.length === 0&&<span className="empty">No members found</span>
+                }
               </div>
             </aside>
-            <main className="chatroom-unified-chat">
+            <main className={`chatroom-unified-chat ${isMobile && showChatList ? 'mobile-hidden' : ''}`}>
               {selectedChat.type === 'team' ? (
                 <>
                   <div className="chatroom-header">
+                    {isMobile && (
+                      <button className="back-to-list-btn" onClick={handleBackToList}>
+                        ← Back
+                      </button>
+                    )}
                     <div className="chatroom-header-info">
                       <div className="chatroom-header-avatar">
                         <span className="chatroom-header-avatar-circle">
@@ -180,6 +219,11 @@ const TeamChatPage = () => {
               ) : selectedChat.type === 'member' ? (
                 <>
                   <div className="chatroom-header">
+                    {isMobile && (
+                      <button className="back-to-list-btn" onClick={handleBackToList}>
+                        ← Back
+                      </button>
+                    )}
                     <div className="chatroom-header-info">
                       <div className="chatroom-header-avatar">
                         <span className="chatroom-header-avatar-circle">

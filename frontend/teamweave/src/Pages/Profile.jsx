@@ -10,7 +10,10 @@ function Profile() {
 
   const dispatch = useDispatch();
 
-  const [isCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isCollapsed, setIsSidebarCollapsed] = useState(() => {
+    // Initialize as collapsed on mobile
+    return window.innerWidth <= 768
+  });
   const [isEditable, setIsEditable] = useState(false); // State to manage edit mode
   const [fields, setFields] = useState({
     fullName: '',
@@ -71,7 +74,7 @@ function Profile() {
 
   return (
     <div className='dashboardLayout'>
-      <Sidebar isCollapsed={isCollapsed} />
+      <Sidebar isCollapsed={isCollapsed} setIsSidebarCollapsed={setIsSidebarCollapsed} />
       <Navbar setIsSidebarCollapsed={setIsSidebarCollapsed} isCollapsed={isCollapsed} />
       <div className={`mainContentArea ${isCollapsed ? 'collapsed' : ''}`}>
         <div className='profileWrapper'>

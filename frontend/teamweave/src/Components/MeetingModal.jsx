@@ -12,6 +12,7 @@ export default function MeetingModal({ isOpen, onClose }) {
   const [members, setMembers] = useState([])
   const [selected, setSelected] = useState(new Set())
   const [query, setQuery] = useState('')
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (!isOpen) return
@@ -19,6 +20,7 @@ export default function MeetingModal({ isOpen, onClose }) {
     let mounted = true
     const load = async () => {
       try {
+        setLoading(true)
         const teamsRes = await dispatch(fetchTeamsByUser()).unwrap()
         const teams = teamsRes || []
         const allMembers = {}
@@ -37,6 +39,8 @@ export default function MeetingModal({ isOpen, onClose }) {
         if (mounted) setMembers(Object.values(allMembers))
       } catch (err) {
         console.error('Failed to load teams/members', err)
+      } finally {
+        if (mounted) setLoading(false)
       }
     }
 
@@ -48,11 +52,15 @@ export default function MeetingModal({ isOpen, onClose }) {
   }, [isOpen, dispatch])
 
   const addMember = (id) => {
-    setSelected((prev) => {
+    if(selected.size < 1){
+      setSelected((prev) => {
       const copy = new Set(prev)
       copy.add(id)
       return copy
     })
+    }else{
+      alert("Group video call comming in next release")
+    }
   }
 
   const removeMember = (id) => {
@@ -81,7 +89,9 @@ export default function MeetingModal({ isOpen, onClose }) {
           <button className="modal-close" onClick={onClose}>×</button>
         </div>
         <div className="modal-body">
-          {members.length === 0 ? (
+          {loading ? (
+            <div className="empty">Loading members...</div>
+          ) : members.length === 0 ? (
             <div className="empty">No members found</div>
           ) : (
             <div className="member-multiselect">

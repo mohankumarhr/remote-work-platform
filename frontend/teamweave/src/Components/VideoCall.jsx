@@ -4,8 +4,21 @@ import "../Styles/VideoCall.css"; // ✅ Include this CSS file
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setConnected, clearIncomingOffer } from '../Redux/VideoCall/signalingSlice';
-import { getCurrentUserId } from '../data';
+import { getCurrentUserId, getInitials, stringToColor } from '../data';
 
+// Component for when camera is off
+const CameraOffFallback = ({ userName }) => {
+  const initial = getInitials(userName);
+  const bgColor = stringToColor(userName || "user");
+  
+  return (
+    <div className="camera-off-fallback" style={{ backgroundColor: '#d3d3d3' }}>
+      <div className="camera-off-avatar" style={{ backgroundColor: bgColor }}>
+        {initial}
+      </div>
+    </div>
+  );
+};
 
 // Add this new component at the top of your VideoCall.jsx file
 
@@ -37,6 +50,8 @@ const VideoCall = ({ userId, signalingServerUrl, peerId, targets = [] }) => {
 
   const localVideoRef = useRef(null);
   const [remoteStreams, setRemoteStreams] = useState({});
+  const [remoteUserNames, setRemoteUserNames] = useState({}); // Store remote user names
+  const [remoteCameraStatuses, setRemoteCameraStatuses] = useState({}); // Store remote camera statuses
   const peerConnections = useRef({});
   const socketRef = useRef(null);
   const localStreamRef = useRef(null);
@@ -51,6 +66,7 @@ const VideoCall = ({ userId, signalingServerUrl, peerId, targets = [] }) => {
   const [inCall, setInCall] = useState(true);
 
   const { socket, incomingOffer } = useSelector((state) => state.signaling);
+  const currentUser = useSelector((state) => state.getUserDetails.value);
 
   const peerConnectionRef = useRef(null);
 
@@ -109,6 +125,10 @@ const VideoCall = ({ userId, signalingServerUrl, peerId, targets = [] }) => {
                 delete peerConnections.current[from];
               }
               break;
+            case "camera-status":
+              // Update remote camera status
+              setRemoteCameraStatuses(prev => ({ ...prev, [from]: payload.enabled }));
+              break;
             case "call-end":
               console.log("Ended")
               handleEndCall(from);
@@ -126,7 +146,7 @@ const VideoCall = ({ userId, signalingServerUrl, peerId, targets = [] }) => {
         if (receivingOffer) {
           // --- We are the RECEIVER ---
           console.log(`Socket open, answering call from peer: ${peerId}`);
-          await handleOffer(peerId, receivingOffer); // Run the existing handleOffer
+          await handleOffer(peerId, receivingOffer); // Pass complete payload with metadata
           dispatch(clearIncomingOffer()); // Clean up the offer from Redux
         } else if (peerId) {
 
@@ -178,24 +198,40 @@ const VideoCall = ({ userId, signalingServerUrl, peerId, targets = [] }) => {
     } catch (err) {
       console.warn("⚠️ Real camera unavailable, switching to fake stream:", err);
 
-      // Create fake canvas stream
+      // Create simple fake canvas stream
       const canvas = document.createElement("canvas");
       canvas.width = 640;
       canvas.height = 480;
       const ctx = canvas.getContext("2d");
-      let hue = 0;
 
-      // Generate a simple animation (colored rectangle)
-      setInterval(() => {
-        ctx.fillStyle = `hsl(${hue % 360}, 100%, 50%)`;
+      // Draw simple gray background
+      const drawFrame = () => {
+        ctx.fillStyle = "#808080";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.font = "30px Arial";
-        ctx.fillStyle = "#fff";
-        ctx.fillText("Fake Video Stream", 120, 240);
-        hue += 5;
-      }, 100);
+      };
 
-      const fakeStream = canvas.captureStream(30);
+      // Draw initial frame
+      drawFrame();
+
+      // Keep updating to ensure stream remains active
+      setInterval(drawFrame, 1000);
+
+      // Capture stream at 30fps for better compatibility
+      const videoStream = canvas.captureStream(30);
+
+      // Create a fake audio track
+      const audioContext = new AudioContext();
+      const oscillator = audioContext.createOscillator();
+      const dst = oscillator.connect(audioContext.createMediaStreamDestination());
+      oscillator.start();
+      const audioTrack = dst.stream.getAudioTracks()[0];
+
+      // Combine video and audio
+      const fakeStream = new MediaStream([
+        ...videoStream.getVideoTracks(),
+        audioTrack
+      ]);
+
       localStreamRef.current = fakeStream;
       if (localVideoRef.current) localVideoRef.current.srcObject = fakeStream;
 
@@ -242,12 +278,27 @@ const VideoCall = ({ userId, signalingServerUrl, peerId, targets = [] }) => {
         type: "offer",
         from: userId,
         to: peerId,
-        payload: offer,
+        payload: {
+          offer,
+          callerName: currentUser?.userName,
+          cameraEnabled: cameraEnabled,
+        },
       })
     );
   };
 
-  const handleOffer = async (peerId, offer) => {
+  const handleOffer = async (peerId, offerPayload) => {
+    const offer = offerPayload?.offer ?? offerPayload;
+    const callerName = offerPayload?.callerName; // Extract caller name
+    const callerCameraEnabled = offerPayload?.cameraEnabled; // Extract caller camera status
+
+    // Store the caller's name
+    if (callerName) {
+      setRemoteUserNames(prev => ({ ...prev, [peerId]: callerName }));
+    }
+
+    // Store the caller's camera status (default to true if not specified)
+    setRemoteCameraStatuses(prev => ({ ...prev, [peerId]: callerCameraEnabled !== undefined ? callerCameraEnabled : true }));
 
     const pc = createPeerConnection(peerId);
     await pc.setRemoteDescription(new RTCSessionDescription(offer));
@@ -258,12 +309,28 @@ const VideoCall = ({ userId, signalingServerUrl, peerId, targets = [] }) => {
         type: "answer",
         from: userId,
         to: peerId,
-        payload: answer,
+        payload: {
+          answer,
+          answererName: currentUser?.userName, // Include answerer name
+          cameraEnabled: cameraEnabled, // Include answerer camera status
+        },
       })
     );
   };
 
-  const handleAnswer = async (peerId, answer) => {
+  const handleAnswer = async (peerId, answerPayload) => {
+    const answer = answerPayload?.answer ?? answerPayload;
+    const answererName = answerPayload?.answererName; // Extract answerer name
+    const answererCameraEnabled = answerPayload?.cameraEnabled; // Extract answerer camera status
+
+    // Store the answerer's name
+    if (answererName) {
+      setRemoteUserNames(prev => ({ ...prev, [peerId]: answererName }));
+    }
+
+    // Store the answerer's camera status (default to true if not specified)
+    setRemoteCameraStatuses(prev => ({ ...prev, [peerId]: answererCameraEnabled !== undefined ? answererCameraEnabled : true }));
+
     const pc = peerConnections.current[peerId];
     await pc.setRemoteDescription(new RTCSessionDescription(answer));
   };
@@ -271,13 +338,21 @@ const VideoCall = ({ userId, signalingServerUrl, peerId, targets = [] }) => {
   const handleEndCall = (from) => {
     console.log(`📞 Call ended by user ${from}`);
 
-    Object.values(peerConnections.current).forEach(pc => pc.close());
-    localStreamRef.current?.getTracks().forEach(track => track.stop());
-    setInCall(false);
-
-    alert("Call ended by the other user.");
-    navigate("/");
-    window.location.reload();
+    // Close all peer connections
+    if (peerConnections.current[from]) {
+      peerConnections.current[from].close();
+      delete peerConnections.current[from];
+    }
+    
+    // If this was the last peer, clean up fully
+    if (Object.keys(peerConnections.current).length === 0) {
+      Object.values(peerConnections.current).forEach(pc => pc.close());
+      localStreamRef.current?.getTracks().forEach(track => track.stop());
+      setInCall(false);
+      alert("Call ended by the other user.");
+      navigate("/");
+      window.location.reload();
+    }
   };
 
 
@@ -290,46 +365,25 @@ const VideoCall = ({ userId, signalingServerUrl, peerId, targets = [] }) => {
     }
   };
 
-  // In your component, create a ref for the timeout
-  const cameraOffTimeoutRef = useRef(null);
+  const toggleCamera = () => {
+    const videoTrack = localStreamRef.current?.getVideoTracks()[0];
+    if (videoTrack) {
+      videoTrack.enabled = !videoTrack.enabled;
+      setCameraEnabled(videoTrack.enabled);
 
-  const toggleCamera = async () => {
-    if (!localStreamRef.current || !localVideoRef.current) return;
-
-    // Clear any pending timeout to prevent bugs if the user clicks rapidly
-    clearTimeout(cameraOffTimeoutRef.current);
-
-    const videoElement = localVideoRef.current;
-    const isCameraEnabled = localStreamRef.current.getVideoTracks().length > 0 &&
-      localStreamRef.current.getVideoTracks()[0].readyState === 'live';
-
-    if (isCameraEnabled) {
-      // --- TURNING CAMERA OFF (Hybrid Approach) ---
-      const track = localStreamRef.current.getVideoTracks()[0];
-
-      // 1. Mute immediately for instant UI feedback
-      track.enabled = false;
-      console.log("Track muted instantly.");
-
-      // 2. Schedule the track to be fully stopped after a short delay
-      cameraOffTimeoutRef.current = setTimeout(() => {
-        track.stop(); // This will turn the light off
-        videoElement.srcObject = null;
-        localStreamRef.current.removeTrack(track);
-        console.log("Track stopped, light should be off.");
-      }, 1500); // 1.5-second delay
-
-      setCameraEnabled(false);
-
-    } else {
-      // --- TURNING CAMERA BACK ON ---
-      try {
-        const newStream = await navigator.mediaDevices.getUserMedia({ video: true });
-        localStreamRef.current = newStream;
-        videoElement.srcObject = newStream;
-        setCameraEnabled(true);
-      } catch (err) {
-        console.error("Error starting camera:", err);
+      // Notify all connected peers about camera status change
+      if (socketRef.current?.readyState === WebSocket.OPEN) {
+        const connectedPeerIds = Object.keys(peerConnections.current);
+        connectedPeerIds.forEach(id => {
+          socketRef.current.send(
+            JSON.stringify({
+              type: "camera-status",
+              from: userId,
+              to: id,
+              payload: { enabled: videoTrack.enabled },
+            })
+          );
+        });
       }
     }
   };
@@ -384,20 +438,28 @@ const VideoCall = ({ userId, signalingServerUrl, peerId, targets = [] }) => {
             playsInline
             muted
             className={`video-element ${!cameraEnabled ? "video-off" : ""}`}
+            style={{ display: cameraEnabled ? "block" : "none" }}
           />
+          {!cameraEnabled && <CameraOffFallback userName={currentUser?.userName || "You"} />}
           <div className="video-label">You {micEnabled ? "" : "(Muted)"}</div>
         </div>
 
         {/* Remote Videos */}
-        {Object.entries(remoteStreams).map(([peerId, stream]) => (
-        <div key={peerId} className="video-card">
+        {Object.entries(remoteStreams).map(([peerId, stream]) => {
+          const isCameraEnabled = remoteCameraStatuses[peerId] !== false; // Default to true if not set
+          const userName = remoteUserNames[peerId] || `User ${peerId}`;
           
-          {/* Use the dedicated component */}
-          <RemoteVideo stream={stream} /> 
-
-          <div className="video-label">User {peerId}</div>
-        </div>
-      ))}
+          return (
+            <div key={peerId} className="video-card">
+              {isCameraEnabled ? (
+                <RemoteVideo stream={stream} />
+              ) : (
+                <CameraOffFallback userName={userName} />
+              )}
+              <div className="video-label">{userName}</div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Controls */}
@@ -421,10 +483,10 @@ const VideoCall = ({ userId, signalingServerUrl, peerId, targets = [] }) => {
         </button>
       </div>
 
-      {/* Test Call Button */}
+      {/* Test Call Button
       <button className="call-btn" onClick={() => callUser(peerId)}>
         Call User 13
-      </button>
+      </button> */}
     </div>
   );
 };

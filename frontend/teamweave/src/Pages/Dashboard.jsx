@@ -20,7 +20,10 @@ function Dashboard() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [isCollapsed, setIsSidebarCollapsed] = useState(false)
+    const [isCollapsed, setIsSidebarCollapsed] = useState(() => {
+        // Initialize as collapsed on mobile
+        return window.innerWidth <= 768
+    })
     const [showCreateTeam, setShowCreateTeam] = useState(false)
     const [showCreateTask, setShowCreateTask] = useState(false)
 
@@ -219,7 +222,7 @@ function Dashboard() {
 
     return (
         <div className='dashboardLayout'>
-            <Sidebar isCollapsed={isCollapsed} />
+            <Sidebar isCollapsed={isCollapsed} setIsSidebarCollapsed={setIsSidebarCollapsed} />
             <Navbar setIsSidebarCollapsed={setIsSidebarCollapsed} isCollapsed={isCollapsed} />
             {/* Main Content Area */}
             <div className={`mainContentArea ${isCollapsed ? 'collapsed' : ''}`}>

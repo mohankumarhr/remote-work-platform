@@ -69,7 +69,7 @@ function Navbar({ setIsSidebarCollapsed, isCollapsed }) {
 
                 <div className='rightSection'>
                     <div className='quickActions'>
-                        <button className='actionButton' onClick={()=>{setShowCreateTask(true)}}>
+                        <button className='actionButton taskButton' onClick={()=>{setShowCreateTask(true)}}>
                             <span className='newTaskIcon'>📋</span>
                             New Task
                         </button>

@@ -21,7 +21,10 @@ function ManageTeams() {
     const [addMemberUsername, setAddMemberUsername] = useState("");
     const [addMemberError, setAddMemberError] = useState("");
     const dispatch = useDispatch()
-    const [isCollapsed, setIsSidebarCollapsed] = useState(false)
+    const [isCollapsed, setIsSidebarCollapsed] = useState(() => {
+        // Initialize as collapsed on mobile
+        return window.innerWidth <= 768
+    })
     const [activeTab, setActiveTab] = useState('teams')
     const [searchTerm, setSearchTerm] = useState('')
     const [showCreateTeamModal, setShowCreateTeamModal] = useState(false)
@@ -248,7 +251,7 @@ function ManageTeams() {
 
     return (
         <div className='dashboardLayout'>
-            <Sidebar isCollapsed={isCollapsed} />
+            <Sidebar isCollapsed={isCollapsed} setIsSidebarCollapsed={setIsSidebarCollapsed} />
             <Navbar setIsSidebarCollapsed={setIsSidebarCollapsed} isCollapsed={isCollapsed} />
 
             <div className={`mainContentArea ${isCollapsed ? 'collapsed' : ''}`}>

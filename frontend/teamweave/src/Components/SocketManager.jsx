@@ -1,9 +1,10 @@
 // src/components/SocketManager.jsx (NEW FILE)
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setConnected, setSocket, setIncomingOffer, clearIncomingOffer } from '../Redux/VideoCall/signalingSlice';
 import { getCurrentUserId, callServiceUrl } from '../data';
+import CallNotification from './CallNotification';
 
 // This component wraps your app and manages the global socket
 const SocketManager = ({ children }) => {
@@ -13,6 +14,33 @@ const SocketManager = ({ children }) => {
   const socketRef = useRef(null);
   const userId = getCurrentUserId(); // Get the user ID once
   const didInitialize = useRef(false);
+  const [incomingCall, setIncomingCall] = useState(null);
+
+  // Handle accept call - moved outside useEffect
+  const handleAcceptCall = () => {
+    if (incomingCall) {
+      // User accepted: navigate to the call page and pass the offer
+      navigate(`/call/${incomingCall.peerId}`, { state: { offer: incomingCall.offer } });
+      setIncomingCall(null);
+    }
+  };
+
+  // Handle reject call - moved outside useEffect
+  const handleRejectCall = () => {
+    if (incomingCall) {
+      // User rejected: send "call-rejected" message
+      socketRef.current.send(
+        JSON.stringify({
+          type: "call-rejected",
+          from: userId,
+          to: incomingCall.peerId,
+          payload: "Call rejected",
+        })
+      );
+      setIncomingCall(null);
+      dispatch(clearIncomingOffer());
+    }
+  };
 
   useEffect(() => {
     // Connect to the WebSocke
@@ -39,8 +67,19 @@ const SocketManager = ({ children }) => {
           console.log(`SocketManager: Received an incoming call offer from ${from}`);
           handleOffer(from, payload); // Use the handler defined below
           break;
+        case "call-end":
+          // Handle call-end from other user before accepting the call
+          console.log(`SocketManager: User ${from} ended the call`);
+          if (incomingCall && incomingCall.peerId === from) {
+            // If we still have an incoming call notification, close it
+            dispatch(clearIncomingOffer());
+            setIncomingCall(null);
+            alert(`User ${from} ended the call before you could answer.`);
+            
+          }
+          break;
         default:
-          // Other messages ("answer", "candidate", "call-end") are handled by VideoCall.jsx,
+          // Other messages ("answer", "candidate") are handled by VideoCall.jsx,
           // so the SocketManager can ignore them.
           break;
       }
@@ -58,27 +97,12 @@ const SocketManager = ({ children }) => {
 
 
     // This is the component that shows the "Accept/Reject" prompt
-    const handleOffer = (peerId, offer) => {
-
-      dispatch(setIncomingOffer({ from: peerId, offer }));
-      const userChoice = window.confirm(`You have an incoming call from User ${peerId}. Accept?`);
-
-      if (userChoice) {
-        // User accepted: navigate to the call page and pass the offer
-        navigate(`/call/${peerId}`, { state: { offer } });
-      } else {
-        // User rejected: send "call-rejected" message
-        socketRef.current.send(
-          JSON.stringify({
-            type: "call-rejected",
-            from: userId,
-            to: peerId,
-            payload: "Call rejected",
-          })
-        );
-      }
-      // We've handled the offer, so clear it from Redux
-      // dispatch(clearIncomingOffer());
+    const handleOffer = (peerId, offerPayload) => {
+      const callerName = offerPayload?.callerName || offerPayload?.name || offerPayload?.username;
+      const offer = offerPayload?.offer ?? offerPayload; // keep compatibility if payload is plain SDP
+      // Store the complete payload to preserve callerName and cameraEnabled
+      dispatch(setIncomingOffer({ from: peerId, offer: offerPayload }));
+      setIncomingCall({ peerId, offer, callerName });
     };
 
     // Global cleanup when the whole app unmounts
@@ -88,7 +112,20 @@ const SocketManager = ({ children }) => {
     };
   }, [userId]);
 
-  return <>{children}</>; // Render the rest of your app
+  return (
+    <>
+      {children}
+      {incomingCall && (
+        <CallNotification
+          peerId={incomingCall.peerId}
+          callerName={incomingCall.callerName}
+          onAccept={handleAcceptCall}
+          onReject={handleRejectCall}
+          closeToast={() => setIncomingCall(null)}
+        />
+      )}
+    </>
+  );
 };
 
 export default SocketManager;

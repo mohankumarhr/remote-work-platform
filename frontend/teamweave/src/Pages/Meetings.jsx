@@ -17,6 +17,10 @@ function Meetings() {
   const [formOpen, setFormOpen] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
   const [form, setForm] = useState({ title: '', description: '', startTime: '', duration: 30, teamId: '' })
+  const [isCollapsed, setIsSidebarCollapsed] = useState(() => {
+    // Initialize as collapsed on mobile
+    return window.innerWidth <= 768
+  })
 
   useEffect(() => {
     // ensure teams loaded
@@ -99,9 +103,9 @@ function Meetings() {
 
   return (
     <div className='dashboardLayout'>
-      <Sidebar />
+      <Sidebar isCollapsed={isCollapsed} setIsSidebarCollapsed={setIsSidebarCollapsed} />
       <div className='mainContentArea'>
-        <Navbar />
+        <Navbar setIsSidebarCollapsed={setIsSidebarCollapsed} isCollapsed={isCollapsed} />
         <div className='dashboardContent meetingsPage'>
           <div className='meetingsHeader'>
             <h2>Team Meetings</h2>

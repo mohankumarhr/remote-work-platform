@@ -394,6 +394,14 @@
   .NavbarContainer {
     left: 0; /* Full width on mobile */
   }
+
+  .navbarWrapper{
+    padding: 0;
+  }
+
+  .quickActions .taskButton{
+    display: none;
+  }
   
   .searchSection {
     max-width: 150px;
