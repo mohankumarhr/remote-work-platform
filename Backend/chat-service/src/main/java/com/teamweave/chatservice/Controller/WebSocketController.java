@@ -10,6 +10,8 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import java.security.Principal;
+
 @Controller
 public class WebSocketController {
 
@@ -20,7 +22,11 @@ public class WebSocketController {
     private ChatMessageService chatService;
 
     @MessageMapping("/chat.send")
-    public void sendMessage(@Payload ChatMessage message) {
+    public void sendMessage(@Payload ChatMessage message, Principal principal) {
+
+        Integer userId = Integer.parseInt(principal.getName());
+        message.setSenderId(userId);
+
         System.out.println("Message Reaches :" + message.getContent());
         ChatMessage saved = chatService.saveMessage(message);
 
@@ -33,6 +39,7 @@ public class WebSocketController {
 
     @MessageMapping("/chat.typing")
     public void typing(@Payload TypingIndicatorDTO indicator) {
+
         System.out.println("indicator "+ indicator.toString());
         if (indicator.getTeamId() != null) {
             System.out.println("Sending typing event to /topic/team." + indicator.getTeamId());

@@ -5,7 +5,7 @@ let stompClient = null;
 
 export const connectWebSocket = (onMessageReceived, teamId, directTo, userId) => {
   // const socket = new SockJS("http://localhost:8085/ws");
-  const socket = new SockJS("https://chat-service-mnpe.onrender.com/ws");
+  const socket = new SockJS(`https://chat-service-mnpe.onrender.com/ws?token=${Cookies.get("jwtToken")}`);
   stompClient = new Client({
     webSocketFactory: () => socket,
     reconnectDelay: 5000,
