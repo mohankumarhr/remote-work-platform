@@ -27,12 +27,21 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
 
         String token = null;
 
-        if (request.getHeaders().containsKey("Authorization")) {
-            token = request.getHeaders().getFirst("Authorization");
+        System.out.println("==== WS HANDSHAKE START ====");
 
-            if (token != null && token.startsWith("Bearer "))
-                token = token.substring(7);
+        System.out.println("Headers: " + request.getHeaders());
+
+        String cookieHeader = request.getHeaders().getFirst("cookie");
+
+        if (cookieHeader == null) return false;
+
+        for (String cookie : cookieHeader.split(";")) {
+            if (cookie.trim().startsWith("jwtToken=")) {
+                token = cookie.trim().substring("jwtToken=".length());
+            }
         }
+
+        System.out.println("Authorization header: " + token);
 
         if (token == null) return false;
 
