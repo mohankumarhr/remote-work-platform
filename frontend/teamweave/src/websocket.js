@@ -1,5 +1,6 @@
 import SockJS from "sockjs-client/dist/sockjs";
 import { Client } from "@stomp/stompjs";
+import Cookies from 'js-cookie'
 
 let stompClient = null;
 
