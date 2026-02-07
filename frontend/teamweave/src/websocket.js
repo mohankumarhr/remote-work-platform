@@ -8,7 +8,7 @@ export const connectWebSocket = (onMessageReceived, teamId, directTo, userId) =>
   // const socket = new SockJS("http://localhost:8085/ws");
   const token = Cookies.get("jwtToken");
   stompClient = new Client({
-    brokerURL: "wss://chat-service-mnpe.onrender.com/ws",
+    brokerURL: `wss://chat-service-mnpe.onrender.com/ws?token=${token}`,
     // brokerURL: "ws://localhost:8085/ws",
     connectHeaders: {
       Authorization: `Bearer ${token}`,

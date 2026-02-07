@@ -8,6 +8,7 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Map;
@@ -25,21 +26,15 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
             WebSocketHandler wsHandler,
             Map<String, Object> attributes) {
 
-        String token = null;
+
 
         System.out.println("==== WS HANDSHAKE START ====");
 
-        System.out.println("Headers: " + request.getHeaders());
-
-        String cookieHeader = request.getHeaders().getFirst("cookie");
-
-        if (cookieHeader == null) return false;
-
-        for (String cookie : cookieHeader.split(";")) {
-            if (cookie.trim().startsWith("jwtToken=")) {
-                token = cookie.trim().substring("jwtToken=".length());
-            }
-        }
+        String token = UriComponentsBuilder
+                .fromUri(request.getURI())
+                .build()
+                .getQueryParams()
+                .getFirst("token");
 
         System.out.println("Authorization header: " + token);
 
