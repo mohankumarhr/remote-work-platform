@@ -38,8 +38,9 @@ public class WebSocketController {
     }
 
     @MessageMapping("/chat.typing")
-    public void typing(@Payload TypingIndicatorDTO indicator) {
-
+    public void typing(@Payload TypingIndicatorDTO indicator, Principal principal) {
+        Long userId = Long.parseLong(principal.getName());
+        indicator.setSenderId(userId);
         System.out.println("indicator "+ indicator.toString());
         if (indicator.getTeamId() != null) {
             System.out.println("Sending typing event to /topic/team." + indicator.getTeamId());
