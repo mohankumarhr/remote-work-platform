@@ -31,6 +31,7 @@ RUN mvn dependency:go-offline -B
 
 # Copy the service source code and build
 COPY ${SERVICE_NAME}/src ./src
+COPY ${SERVICE_NAME}/aiven-truststore.jks ./aiven-truststore.jks
 RUN mvn clean package -DskipTests
 
 
