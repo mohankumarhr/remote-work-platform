@@ -47,4 +47,6 @@ COPY --from=build /app/target/*.jar app.jar
 #ARG PORT=8080
 #EXPOSE ${PORT}
 
+COPY aiven-truststore.jks aiven-truststore.jks
+
 ENTRYPOINT ["sh", "-c", "java -jar app.jar --server.port=$PORT"]
