@@ -31,4 +31,6 @@ public interface TaskRepo extends JpaRepository<Task, Integer> {
     List<Task> findByProjectAndStatus(Project project, TaskStatus status);
 
     List<Task> findTaskByCreatedByUserId(int userId);
+
+    Integer deleteAllByTeamId(int teamId);
 }

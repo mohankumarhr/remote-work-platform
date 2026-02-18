@@ -10,6 +10,7 @@ import com.teamweave.taskservice.Entity.TaskPriority;
 import com.teamweave.taskservice.Entity.TaskStatus;
 import com.teamweave.taskservice.Repo.ProjectRepo;
 import com.teamweave.taskservice.Repo.TaskRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -208,5 +209,16 @@ public class TaskService {
     public List<TaskDTO> getTasksByOwnerId(int ownerId) {
         List<Task> tasks = taskRepo.findTaskByCreatedByUserId(ownerId);
         return toTaskDTOList(tasks);
+    }
+
+    @Transactional
+    public String deleteTasksByTeamId(Integer teamId) {
+        int deleted = taskRepo.deleteAllByTeamId(teamId);
+
+        if (deleted == 0) {
+            return "No tasks found for team ID: " + teamId;
+        }
+
+        return "Deleted " + deleted + " tasks for team ID: " + teamId;
     }
 }

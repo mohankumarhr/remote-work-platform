@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -31,8 +32,14 @@ public class TeamService {
     @Autowired
     private JwtService jwtService;
 
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
     @Value("${user.service.url}")  
     private String userServiceUrl;
+
+    public TeamService(KafkaTemplate<String, String> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
 
     public ResponseEntity<String> createTeam(Team team) {
         if (team.getName() == null || team.getName().isEmpty()) {
@@ -196,6 +203,7 @@ public class TeamService {
     Optional<Team> teamOptional = teamRepo.findById(teamId);
         if (teamOptional.isPresent()) {
             teamRepo.delete(teamOptional.get());
+            kafkaTemplate.send("team-events", String.valueOf(teamId));
             return ResponseEntity.ok("Team deleted successfully");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Team not found");

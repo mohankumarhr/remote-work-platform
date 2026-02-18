@@ -7,6 +7,7 @@ import com.teamweave.taskservice.Entity.Task;
 import com.teamweave.taskservice.Entity.TaskStatus;
 import com.teamweave.taskservice.Repo.ProjectRepo;
 import com.teamweave.taskservice.Repo.TaskRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -173,11 +174,24 @@ public class ProjectService {
         }
     }
 
-
     private int calculateProgress(List<TaskDTO> tasks) {
         if (tasks.isEmpty()) return 0;
         long completedTasks = tasks.stream().filter(task -> task.getStatus() == TaskStatus.COMPLETED).count();
         return (int) ((completedTasks * 100) / tasks.size());
+    }
+
+    @Transactional
+    public ResponseEntity<String> deleteProjectsByTeamId(int teamId) {
+        try {
+            List<Project> projects = projectRepo.findByTeamId(teamId);
+            if (projects.isEmpty()) {
+                return ResponseEntity.status(404).body("No projects found for the given team ID");
+            }
+            projectRepo.deleteProjectsByTeamId(teamId);
+            return ResponseEntity.ok("Projects and associated tasks deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error deleting projects: " + e.getMessage());
+        }
     }
 }
 

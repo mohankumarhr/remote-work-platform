@@ -11,4 +11,5 @@ import java.util.List;
 public interface ProjectRepo extends JpaRepository<Project, Integer> {
     List<Project> findByTeamId(int teamId);
     List<Project> findByOwnerId(int userId);
+    Integer deleteProjectsByTeamId(int teamId);
 }
