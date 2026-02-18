@@ -31,6 +31,7 @@ RUN mvn dependency:go-offline -B
 
 # Copy the service source code and build
 COPY ${SERVICE_NAME}/src ./src
+COPY ${SERVICE_NAME}/aiven-truststore.jks ./aiven-truststore.jks
 RUN mvn clean package -DskipTests
 
 
@@ -46,5 +47,7 @@ COPY --from=build /app/target/*.jar app.jar
 # Expose the port (change if needed)
 #ARG PORT=8080
 #EXPOSE ${PORT}
+
+COPY --from=build /app/aiven-truststore.jks aiven-truststore.jks
 
 ENTRYPOINT ["sh", "-c", "java -jar app.jar --server.port=$PORT"]
