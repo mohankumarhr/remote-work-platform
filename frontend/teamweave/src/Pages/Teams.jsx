@@ -10,6 +10,7 @@ import { fetchProjectByTeam } from '../API/ProjectAPI'
 import { projectsData } from '../data'
 import Cookies from 'js-cookie'
 import BackgroundLetterAvatars from '../Components/Avatar'
+import LoadingOverlay from '../Components/LoadingOverlay'
 // import { teamsData, membersData, projectsDetailedData } from '../data'
 // import {projectsDetailedData } from '../data'
 import { getInitials, stringToColor } from '../data'
@@ -22,18 +23,22 @@ function Teams() {
     const teamsData = useSelector((state) => state.getMemberedTeam.value)
     const teamMembers = useSelector((state) => state.getTeamMembers.value)
     const teamProjects = useSelector((state) => state.getProject.value)
-    const isLoading = useSelector((state) => state.getMemberedTeam.loading)
+    const isLoading = useSelector((state) => 
+        state.getMemberedTeam.loading ||
+        state.getTeamMembers?.loading
+    )
     const error = useSelector((state) => state.getMemberedTeam.error)
 
     const [isCollapsed, setIsSidebarCollapsed] = useState(() => {
         // Initialize as collapsed on mobile
         return window.innerWidth <= 768
     })
-    const [selectedTeam, setSelectedTeam] = useState(teamsData[0]?.id || null)
+    const [selectedTeam, setSelectedTeam] = useState(null)
     const [showCreateTeam, setShowCreateTeam] = useState(false)
     const [expandedProject, setExpandedProject] = useState(null)
     const [selectedMember, setSelectedMember] = useState(null)
     const [showMemberDetails, setShowMemberDetails] = useState(false)
+    const [loadingOverlay, setLoadingOverlay] = useState(false)
 
     const currentTeam = teamsData.find(team => team.id === selectedTeam)
     
@@ -49,18 +54,19 @@ function Teams() {
 
      useEffect(()=>{
             dispatch(fetchTeamsByUser())
+            setSelectedTeam(teamsData[0].id)
             // console.log(apiTask)
     }, [dispatch])
 
 
-    useEffect(()=>{
-        console.log("hi")
-            if (teamsData.length > 0) {
-                setSelectedTeam(teamsData[0].id)
-                dispatch(fetchTeamMember(teamsData[0].id))
-                dispatch(fetchProjectByTeam(teamsData[0].id))
-            }
-    }, [teamsData])
+    // useEffect(()=>{
+    //     console.log("hi")
+    //         if (teamsData.length > 0) {
+    //             setSelectedTeam(teamsData[0].id)
+    //             dispatch(fetchTeamMember(teamsData[0].id))
+    //             dispatch(fetchProjectByTeam(teamsData[0].id))
+    //         }
+    // }, [teamsData])
 
 
     const handleCreateTeam = () => {
@@ -74,6 +80,7 @@ function Teams() {
     }
 
     const handleTeamSubmit = async (teamData) => {
+        setLoadingOverlay(true)
         try {
             // Get current user ID from JWT token
             const token = Cookies.get("jwtToken")
@@ -109,6 +116,7 @@ function Teams() {
             console.error('Failed to create team:', error)
             // You could show an error notification here
         }
+        setLoadingOverlay(false)
     }
 
     const toggleProject = (projectId) => {
@@ -139,6 +147,8 @@ function Teams() {
             
             <div className={`mainContentArea ${isCollapsed ? 'collapsed' : ''}`}>
                 <div className='teamsContent'>
+                    {isLoading && <LoadingOverlay message='Loading teams...' />}
+
                     {/* Header */}
                     <div className='teamsHeader'>
                         <div className='headerInfo'>

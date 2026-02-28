@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,8 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-
-    private static final String SECRET = "my server secret key for jwt generation and validation"; // should be in env/config
+    @Value("${jwt.secret}")
+    private String SECRET; // should be in env/config
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 hours
 
     private SecretKey getSignInKey() {

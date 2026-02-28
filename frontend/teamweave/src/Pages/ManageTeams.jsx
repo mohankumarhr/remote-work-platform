@@ -43,7 +43,8 @@ function ManageTeams() {
     const isLoading = useSelector((state) =>
         state.getCreatedTeams?.loading ||
         state.getCreatedProjects?.loading ||
-        state.getCreatedTasks?.loading
+        state.getCreatedTasks?.loading ||
+        state.getTeamMembers?.loading
     )
     const teamMembers = useSelector((state) => state.getTeamMembers.value)
 
@@ -470,7 +471,7 @@ function ManageTeams() {
                 <div className='modalOverlay'>
                     <div className='modalContent'>
                         <h2 className='team-members-title'>Team Members</h2>
-                        {teamMembersLoading ? (
+                        {isLoading ? (
                             <div>Loading...</div>
                         ) : teamMembers.length === 0 ? (
                             <div>No members found.</div>
