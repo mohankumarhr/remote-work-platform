@@ -4,7 +4,12 @@ services:
 
   # Spring Boot services
   auth-service:
-    image: mohankumarhr/auth-service
+    build:
+      context: ../Backend
+      dockerfile: ./auth-service/Dockerfile
+      args:
+        SERVICE_NAME: auth-service
+        PORT: 8081
     container_name: auth-service
     environment:
       ENV: prod
@@ -19,7 +24,12 @@ services:
       - "8081:8080"
 
   user-service:
-    image: mohankumarhr/user-service
+    build:
+      context: ../Backend
+      dockerfile: ./user-service/Dockerfile
+      args:
+        SERVICE_NAME: user-service
+        PORT: 8082
     container_name: user-service
     depends_on:
       - auth-service
@@ -33,7 +43,12 @@ services:
       - "8082:8080"
 
   team-service:
-    image: mohankumarhr/team-service
+    build:
+      context: ../Backend
+      dockerfile: ./team-service/Dockerfile
+      args:
+        SERVICE_NAME: team-service
+        PORT: 8083
     container_name: team-service
     environment:
       ENV: prod
@@ -48,7 +63,12 @@ services:
       - "8083:8080"
 
   task-service:
-    image: mohankumarhr/task-service
+    build:
+      context: ../Backend
+      dockerfile: ./task-service/Dockerfile
+      args:
+        SERVICE_NAME: task-service
+        PORT: 8084
     container_name: task-service
     environment:
       ENV: prod
@@ -63,7 +83,12 @@ services:
       - "8084:8080"
 
   chat-service:
-    image: mohankumarhr/chat-service
+    build:
+      context: ../Backend
+      dockerfile: ./chat-service/Dockerfile
+      args:
+        SERVICE_NAME: chat-service
+        PORT: 8085
     container_name: chat-service
     environment:
       ENV: prod
@@ -113,7 +138,12 @@ services:
 #      - "8087:8087"
 
   call-service:
-    image: mohankumarhr/call-service
+    build:
+      context: ../Backend
+      dockerfile: ./CallService/Dockerfile
+      args:
+        SERVICE_NAME: CallService
+        PORT: 8089
     container_name: call-service
     environment:
       ENV: prod
