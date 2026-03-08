@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'auth-service/**'
+      - 'Backend/auth-service/**'
 
 jobs:
   build-and-deploy:
