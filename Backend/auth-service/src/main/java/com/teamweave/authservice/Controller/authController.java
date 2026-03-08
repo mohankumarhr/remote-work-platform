@@ -25,7 +25,7 @@ public class authController {
     @RequestMapping("/login")
     public Map<String, LoginResponse> login(@RequestBody Users user) {
         LoginResponse result = userService.login(user);
-        return Collections.singletonMap("response1", result);
+        return Collections.singletonMap("response2", result);
     }
 
 
