@@ -58,6 +58,8 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
+            cd remote-work-platform
+            cd docker
             docker stop auth-service || true
             docker rm auth-service || true
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/auth-service
