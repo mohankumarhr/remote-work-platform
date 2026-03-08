@@ -25,7 +25,13 @@ jobs:
 
       - name: Build Project
         run: |
-          cd Backend/auth-service
+          cd Backend
+          
+          cd commonjwt
+          mvn clean install -DskipTests
+          cd ..
+          
+          cd auth-service
           mvn clean package -DskipTests
 
       - name: Login DockerHub
