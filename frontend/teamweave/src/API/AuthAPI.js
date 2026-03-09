@@ -5,8 +5,11 @@ import { useNavigate } from 'react-router-dom'
 // const base_url = "http://localhost:8081/auth"
 // const base_url_verify = "http://localhost:8081/verification"
 
-const base_url = "https://auth-service-zq2s.onrender.com/auth"
-const base_url_verify = "https://auth-service-zq2s.onrender.com/verification"
+// const base_url = "https://auth-service-zq2s.onrender.com/auth"
+// const base_url_verify = "https://auth-service-zq2s.onrender.com/verification"
+
+const base_url = "http://13.204.66.227/api/auth"
+const base_url_verify = "http://13.204.66.227/api/auth/verification"
 
 export const handleLogin = async (LoginDetails) => {
     console.log("logindetails", LoginDetails)
