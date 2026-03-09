@@ -8,8 +8,8 @@ import { useNavigate } from 'react-router-dom'
 // const base_url = "https://auth-service-zq2s.onrender.com/auth"
 // const base_url_verify = "https://auth-service-zq2s.onrender.com/verification"
 
-const base_url = "http://13.204.66.227/api/auth"
-const base_url_verify = "http://13.204.66.227/api/auth/verification"
+const base_url = "https://13.204.66.227.nip.io/api/auth"
+const base_url_verify = "https://13.204.66.227.nip.io/api/auth/verification"
 
 export const handleLogin = async (LoginDetails) => {
     console.log("logindetails", LoginDetails)

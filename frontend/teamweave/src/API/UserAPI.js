@@ -6,7 +6,7 @@ import Cookies from 'js-cookie'
 
 // const userSericeUrl = "https://user-service-hu3w.onrender.com"
 
-const userSericeUrl = "http://13.204.66.227/api"
+const userSericeUrl = "https://13.204.66.227.nip.io/api"
 
 export const fetchUserDetails = createAsyncThunk(
     'teams/fetchUserDetails',
