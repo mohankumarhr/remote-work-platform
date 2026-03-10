@@ -1,12 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import { aws_url } from '../data'
 
 // const userSericeUrl = "http://localhost:8082"
 
 // const userSericeUrl = "https://user-service-hu3w.onrender.com"
 
-const userSericeUrl = "https://13.204.66.227.nip.io/api"
+const userSericeUrl = `${aws_url}`|| "https://user-service-hu3w.onrender.com"
 
 export const fetchUserDetails = createAsyncThunk(
     'teams/fetchUserDetails',

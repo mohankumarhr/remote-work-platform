@@ -564,3 +564,5 @@ export const getCurrentUserId = () => {
     }
 
 };
+
+export const aws_url = "https://13.204.66.227.nip.io/api"
