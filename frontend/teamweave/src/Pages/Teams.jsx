@@ -55,6 +55,8 @@ function Teams() {
      useEffect(()=>{
             dispatch(fetchTeamsByUser())
             setSelectedTeam(teamsData[0].id)
+            dispatch(fetchTeamMember(teamsData[0].id))
+            dispatch(fetchProjectByTeam(teamsData[0].id))
             // console.log(apiTask)
     }, [dispatch])
 
@@ -137,7 +139,7 @@ function Teams() {
     const handleTeamSelection = (teamId) => {
         setSelectedTeam(teamId)
         dispatch(fetchTeamMember(teamId))
-        dispatch(fetchProjectByTeam(teamId))
+        dispatch(fetchProjectByTeam(teamId))    
     }
 
     return (
