@@ -11,6 +11,7 @@ import { projectsData } from '../data'
 import Cookies from 'js-cookie'
 import BackgroundLetterAvatars from '../Components/Avatar'
 import LoadingOverlay from '../Components/LoadingOverlay'
+import ServiceWakeupBanner from '../Components/ServiceWakeupBanner'
 // import { teamsData, membersData, projectsDetailedData } from '../data'
 // import {projectsDetailedData } from '../data'
 import { getInitials, stringToColor } from '../data'
@@ -54,9 +55,11 @@ function Teams() {
 
      useEffect(()=>{
             dispatch(fetchTeamsByUser())
+            if (teamsData.length > 0) {
             setSelectedTeam(teamsData[0].id)
             dispatch(fetchTeamMember(teamsData[0].id))
             dispatch(fetchProjectByTeam(teamsData[0].id))
+            }
             // console.log(apiTask)
     }, [dispatch])
 
@@ -149,6 +152,7 @@ function Teams() {
             
             <div className={`mainContentArea ${isCollapsed ? 'collapsed' : ''}`}>
                 <div className='teamsContent'>
+                    <ServiceWakeupBanner />
                     {isLoading && <LoadingOverlay message='Loading teams...' />}
 
                     {/* Header */}

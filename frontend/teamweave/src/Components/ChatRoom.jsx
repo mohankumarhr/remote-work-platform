@@ -80,7 +80,6 @@ const ChatRoom = ({ userId, teamId, directTo, members = [], type, ShowTypingIndi
 
 
   const handleSend = () => {
-    console.log(messages)
     if (input.trim()) {
       const chatMessage = {
         senderId: userId,
@@ -91,12 +90,8 @@ const ChatRoom = ({ userId, teamId, directTo, members = [], type, ShowTypingIndi
         type: type
       };
       sendMessage(chatMessage);
+      dispatch(addMessage(chatMessage));
       setInput("");
-      if (directTo) {
-        dispatch(fetchChatByReceiver({ senderId: userId, receiverId: directTo }));
-      } else if (teamId) {
-        dispatch(fetchTeamChat({ teamId }));
-      }
     }
   };
 

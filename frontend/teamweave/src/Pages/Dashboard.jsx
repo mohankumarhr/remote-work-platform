@@ -14,6 +14,7 @@ import { fetchAssignedTasks } from '../API/taskAPI'
 import { fetchProjectById } from '../API/ProjectAPI'
 import { useNavigate } from 'react-router-dom'
 import { fetchUserDetails } from '../API/UserAPI'
+import ServiceWakeupBanner from '../Components/ServiceWakeupBanner'
 
 function Dashboard() {
 
@@ -227,6 +228,7 @@ function Dashboard() {
             {/* Main Content Area */}
             <div className={`mainContentArea ${isCollapsed ? 'collapsed' : ''}`}>
                 <div className='dashboardContent'>
+                    <ServiceWakeupBanner />
                     <h1 className='welcomeTitle'>
                         Good morning, {user?.userName || 'User'}! 👋
                     </h1>

@@ -1,0 +1,116 @@
+.serviceWakeupOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(10, 20, 30, 0.55);
+  backdrop-filter: blur(4px);
+}
+
+/* CARD */
+
+.serviceWakeupCard {
+  width: min(640px, 100%);
+  padding: 28px;
+  border-radius: 16px;
+
+  background: white;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* HEADER */
+
+.serviceWakeupHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.serviceWakeupHeader h3 {
+  margin: 0 0 4px;
+  font-size: 1.15rem;
+  color: #163a59;
+}
+
+.serviceWakeupHeader p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: #445b6b;
+  line-height: 1.5;
+}
+
+
+/* INFO */
+
+.serviceWakeupInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wakeTimer {
+  font-weight: 700;
+  color: #0c5a38;
+  font-size: 0.95rem;
+}
+
+.wakeProgressText {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2a4f73;
+}
+
+/* PROGRESS BAR */
+
+.progressBar {
+  width: 100%;
+  height: 8px;
+  background: #e6eef6;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg,#4da3ff,#2c7be5);
+  border-radius: 8px;
+  transition: width 0.4s ease;
+}
+
+/* LINK */
+
+.projectInfoLink {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1d63d8;
+  text-decoration: none;
+}
+
+.projectInfoLink:hover {
+  text-decoration: underline;
+}
+
+/* MOBILE */
+
+@media (max-width: 640px) {
+
+  .serviceWakeupCard {
+    padding: 22px;
+  }
+
+  .serviceWakeupHeader {
+    align-items: center;
+  }
+
+  .serviceWakeupHeader h3 {
+    font-size: 1.05rem;
+  }
+}

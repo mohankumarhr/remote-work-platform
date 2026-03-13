@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import "../Styles/TeamChatPage.css";
 import { fetchChatByReceiver, fetchTeamChat } from "../API/messagesAPI";
 import BackgroundLetterAvatars from "../Components/Avatar";
+import ServiceWakeupBanner from "../Components/ServiceWakeupBanner";
 
 const getCurrentUserId = () => {
   const token = Cookies.get("jwtToken")
@@ -135,6 +136,7 @@ const TeamChatPage = () => {
       <Navbar setIsSidebarCollapsed={setIsSidebarCollapsed} isCollapsed={isSidebarCollapsed} />
       <Sidebar isCollapsed={isSidebarCollapsed} setIsSidebarCollapsed={setIsSidebarCollapsed} />
       <div className={`mainContentArea ${isSidebarCollapsed ? 'collapsed' : ''}`}>
+        <ServiceWakeupBanner />
         <div style={{ flex: 1, minWidth: 0, display: 'flex' }}>
           <div className="chatroom-unified-layout" style={{ width: '100%' }}>
             <aside className={`chatroom-unified-list ${isMobile && !showChatList ? 'mobile-hidden' : ''}`}>

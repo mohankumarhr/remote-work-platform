@@ -9,6 +9,7 @@ import { teamsData, projectsDetailedData } from '../data'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchAssignedTasks, updateTaskStatus } from '../API/taskAPI'
 import { fetchTeamsByUser } from '../API/teamAPI'
+import ServiceWakeupBanner from '../Components/ServiceWakeupBanner'
 
 function Tasks() {
 
@@ -205,6 +206,7 @@ function Tasks() {
 
             <div className={`mainContentArea ${isCollapsed ? 'collapsed' : ''}`}>
                 <div className='tasksContent'>
+                    <ServiceWakeupBanner />
                     {/* Header */}
                     <div className='tasksHeader'>
                         <div className='headerInfo'>
