@@ -5,8 +5,10 @@ const FIVE_MINUTES_IN_SECONDS = 5 * 60;
 const REQUEST_INTERVAL_MS = 45 * 1000;
 
 const defaultWakeUrls = [
-  'https://teamweave-api.onrender.com/health/',
-  'https://teamweave-socket.onrender.com/health/',
+  'https://team-service-ec7y.onrender.com',
+  'https://task-service-ewiw.onrender.com',
+  'https://chat-service-mnpe.onrender.com',
+  'https://call-service-dpcq.onrender.com'
 ];
 
 const formatTime = (totalSeconds) => {
