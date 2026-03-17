@@ -119,9 +119,9 @@ public class UserService {
             verificationToken.setExpirationTime(LocalDateTime.now().plusMinutes(10));
             verificationTokenRepo.save(verificationToken);
         }
-
+        String url = authServiceUrl;
         // Send the verification email
-        String verificationLink = "http://localhost:8081/verification/verify?token=" + verificationToken.getToken();
+        String verificationLink = url + "/verification/verify?token=" + verificationToken.getToken();
         emailService.sendEmail(user.getEmail(), "Resend Email Verification", "Click the link to verify your email: " + verificationLink);
 
         return "Verification email resent successfully.";
