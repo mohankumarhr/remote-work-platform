@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/verification")
+@RequestMapping("/auth/verification")
 @CrossOrigin
 public class VerificationController {
     @Autowired
