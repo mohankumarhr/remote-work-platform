@@ -62,7 +62,7 @@ public class UserService {
         createVerificationToken(user, token);
         String url = authServiceUrl;
 
-        String verificationLink = url + "/verification/verify?token=" + token;
+        String verificationLink = url + "/auth/verification/verify?token=" + token;
         emailService.sendEmail(user.getEmail(), "Email Verification", "Click the link to verify your email: " + verificationLink);
         return user;
     }
@@ -121,7 +121,7 @@ public class UserService {
         }
         String url = authServiceUrl;
         // Send the verification email
-        String verificationLink = url + "/verification/verify?token=" + verificationToken.getToken();
+        String verificationLink = url + "/auth/verification/verify?token=" + verificationToken.getToken();
         emailService.sendEmail(user.getEmail(), "Resend Email Verification", "Click the link to verify your email: " + verificationLink);
 
         return "Verification email resent successfully.";
