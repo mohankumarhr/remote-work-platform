@@ -8,6 +8,8 @@ import MeetingModal from './MeetingModal';
 import { useSelector } from 'react-redux';
 import { getInitials } from '../data';
 import CreateTaskModal from './CreateTaskModal';
+import { toast } from 'react-toastify';
+import { handleLogout } from '../API/AuthAPI';
 
 function Navbar({ setIsSidebarCollapsed, isCollapsed }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -29,6 +31,9 @@ function Navbar({ setIsSidebarCollapsed, isCollapsed }) {
                 break;
             case 'Manage Teams':
                 navigate('/manage');
+                break;
+            case 'Log Out':
+                handleLogout(toast, navigate);
                 break;
             default:
                 break;
