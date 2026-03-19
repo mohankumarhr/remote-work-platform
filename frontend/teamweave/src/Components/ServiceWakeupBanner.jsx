@@ -19,7 +19,7 @@ const formatTime = (totalSeconds) => {
 
 const ServiceWakeupBanner = ({
   wakeUrls = defaultWakeUrls,
-  projectInfoLink = 'https://github.com/',
+  projectInfoLink = 'https://teamweave-spotlight.netlify.app/',
 }) => {
   const [secondsLeft, setSecondsLeft] = useState(FIVE_MINUTES_IN_SECONDS);
   const [respondedUrls, setRespondedUrls] = useState({});
