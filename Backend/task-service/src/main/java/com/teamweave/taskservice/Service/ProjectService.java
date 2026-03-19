@@ -45,9 +45,12 @@ public class ProjectService {
                 if (oldproject == null) {
                     return ResponseEntity.status(404).body("Project not found");
                 }
-                project.setStartDate(oldproject.getStartDate());
-                project.setId(projectId);
-                projectRepo.save(project);
+                oldproject.setName(project.getName());
+                oldproject.setDescription(project.getDescription());
+                oldproject.setSubject(project.getSubject());
+                oldproject.setTeamId(project.getTeamId());
+                oldproject.setDueDate(project.getDueDate());
+                projectRepo.save(oldproject);
                 return ResponseEntity.ok("Project updated successfully");
             } else {
                 return ResponseEntity.status(404).body("Project not found");

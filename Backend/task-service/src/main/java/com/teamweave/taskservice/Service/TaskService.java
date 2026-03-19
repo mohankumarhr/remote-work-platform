@@ -61,13 +61,23 @@ public class TaskService {
     }
 
     public ResponseEntity<String> updateTask(int taskId, Task task) {
+
         if (taskRepo.existsById(taskId)) {
-            task.setCreatedAt(taskRepo.findById(taskId).get().getCreatedAt()); // Preserve createdAt
-            task.setId(taskId);
-            if (taskRepo.findById(taskId).get().getStatus() != TaskStatus.COMPLETED && task.getStatus() == TaskStatus.COMPLETED) {
-                task.setCompletedAt(LocalDate.now()); // Set completedAt if status is changed to COMPLETED
+            Task existingTask = taskRepo.findById(taskId).orElse(null);
+            if (existingTask == null) {
+                return ResponseEntity.status(404).body("Task not found");
             }
-            taskRepo.save(task);
+            existingTask.setTitle(task.getTitle());
+            existingTask.setDescription(task.getDescription());
+            existingTask.setDueDate(task.getDueDate());
+            existingTask.setPriority(task.getPriority());
+            existingTask.setTeamId(task.getTeamId());
+            existingTask.setAssignedToUserId(task.getAssignedToUserId());
+//            existingTask.setCreatedAt(existingTask.getCreatedAt()); // Preserve createdAt
+            if (existingTask.getStatus() != TaskStatus.COMPLETED && task.getStatus() == TaskStatus.COMPLETED) {
+                existingTask.setCompletedAt(LocalDate.now()); // Set completedAt if status is changed to COMPLETED
+            }
+            taskRepo.save(existingTask);
             return ResponseEntity.ok("Task updated successfully");
         } else {
             return ResponseEntity.status(404).body("Task not found");
